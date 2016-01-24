@@ -1,0 +1,295 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" MaintainScrollPositionOnPostback="true" CodeFile="Default.aspx.cs" Inherits="Default" %>
+
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp"  %>
+
+<%@ Register Assembly="MSCaptcha" Namespace="MSCaptcha" TagPrefix="cc1" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Absent words and the (dis)similarity analysis of DNA sequences: An Experimental Study</title>
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Tangerine&amp;v1" />
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz" />
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script src="jquery-ui.js" type="text/jscript"></script>
+    <link href="jquery-ui.css" rel="stylesheet" />
+    <link href="common.css" rel="stylesheet" />
+    <link href="justified-nav.css" rel="stylesheet"/>
+
+    <!-- jit -->
+    <link type="text/css" href="jit/css/base.css" rel="stylesheet" />
+    <link type="text/css" href="jit/css/Spacetree.css" rel="stylesheet" />
+    <!--[if IE]><script language="javascript" type="text/javascript" src="jit/Extras/excanvas.js"></script><![endif]-->
+
+    <!-- JIT Library File -->
+    <script language="javascript" type="text/javascript" src="jit/jit.js"></script>
+
+    <!-- Example File -->
+    
+    <script type="text/jscript">
+        function ValidateUploadFileType() {
+            if (document.getElementById("<%=txtCaptcha.ClientID%>").value == "") {
+                alert("Please fill the box.");
+                return false;
+            }
+
+            if (document.getElementById("<%=FileUpload1.ClientID%>").value == "") {
+                alert("Please select the file to upload.");
+                return false;
+            }
+            else {
+                var value = document.getElementById("<%=FileUpload1.ClientID%>").value,
+                ext = value.split(".").pop();
+                var filesize = document.getElementById("<%=FileUpload1.ClientID%>");
+                if ( ext == "zip" ) {
+                    if (filesize.files[0].size > 1073741824/5) {
+                        alert("File size is greater than 10 MB. ");
+                        return false;
+                    }
+                    return true;
+                }
+                else //if (ext == "exe" || ext == "rar" || ext == "zip" || ext == "hex")
+                {
+                    alert("Please select a valid file format.");
+                    return false;
+                }
+
+            }
+        }
+        function ShowProgress() {
+            setTimeout(function () {
+                var modal = $('<div />');
+                modal.addClass("modal");
+                $('body').append(modal);
+                var loading = $(".loading");
+                loading.show();
+                var top = Math.max($(window).height() / 2 - loading[0].offsetHeight / 2, 0);
+                var left = Math.max($(window).width() / 2 - loading[0].offsetWidth / 2, 0);
+                loading.css({ top: top, left: left });
+            }, 300);
+        }
+        $('form').live("submit", function () {
+            ShowProgress();
+        });
+    </script>
+
+</head>
+
+<body   >
+    <form id="form1" runat="server">
+        <div id="main">
+            <div id="header" style=" background-color :Black">
+              <div id="logo" style="padding-top:10px;"> 
+              <!--<h2>An Experimental Study:&nbsp; </h2>-->
+              <h1 >MAWDist  &nbsp;</h1>
+              <br />
+              </div>
+              <br />
+            </div>
+        </div>
+        <div id="site_content" style="margin-top:0px;" >
+            <div id="sidebar_container" >
+           
+                 <!--
+                    <div class="sidebar">
+                    <h3>Navigation</h3>
+                        <ul>
+                        <li><a class="nav" href="Default.aspx">Home</a></li>
+                        <li><a class="nav" href="App.aspx">Demo</a></li>
+                        </ul>
+                        </div>
+                     -->
+                <div class="sidebar">
+                    <h3>Contact Details</h3>
+                    <p>Mohammad Saifur Rahman<br />
+                    Department of CSE, BUET<br />
+                    <a href="#">mrahman[@]cse.buet.ac.bd</a></p>
+                    <!--
+                    <h4>Last updated on</h4>
+                    <h5>22nd December 2014</h5>
+                    <p>
+                    Department of Informatics, 
+                    King's College London,
+                    Strand,<br /> 
+                    London <br /> 
+                    WC2R 2LS,<br />  
+                    UK.<br />
+                    <a href="#">ali.alatabbi(at)kcl.ac.k </a></p>
+                    -->
+                </div>
+                
+            </div>
+            <div id="content">
+                <div class="sidebar" style=" width:97%; float:left;">
+                    <br />
+                     <h1>Absent words and the dissimilarity analysis of DNA sequences</h1>
+                    <h5> By; Mohammad Saifur Rahman, Ali Alatabbi, Tanver Athar, Maxime Crochemore, M. Sohel Rahman</h5>
+                    <hr />
+                    <h2>MAWDist</h2>
+                    <br />
+                    <p>
+                        This tool takes the set of Minimal Absent Words (MAW) 
+                        from two sequences and produces the distant matrices based on a number of indexes. 
+                        <br />
+                        The distance matrices can be used to produce phylogenetic 
+                        trees using a number of known algorithms.
+                    </p>
+                    <!-- <hr />
+                    <h2>Future Direction </h2>
+                    <p> <</p>-->
+                    <br />
+                    <hr />
+                    <h2>Demo application </h2>
+                    <p  style="font-size:15px; font-weight:bold; color:red;">Step 1: Create new experiment</p>
+                    <asp:Label ID="Label3" runat="server" >Type the experiment name and click create button</asp:Label>
+                    <br /><br />
+                     
+                    
+                    <asp:TextBox ID="TextBoxExpName" style="font-size:20px;" runat="server"></asp:TextBox>
+                     <br />
+                     <br />
+                    <asp:Button ID="ButtonCreateExp" class="buttonstyleCss" runat="server" Text="Create" OnClick="ButtonCreateExp_Click" />
+                     <br />
+                   
+                   <br />
+                    <asp:Label style="font-size:12px; border:1px solid #CBD1D2; background-color:#bef4ec; color:#151813; padding:5px; width:585px;" ID="msg1" runat="server" Width="100%" Visible="false"></asp:Label>
+                      <br />  <br />
+
+                         <!-- upload -->
+                    <p  style="font-size:15px; font-weight:bold; color:red;">Step 2: Upload data</p>
+                    <div id="DivownMotif" runat="server">
+                        <p style="font-size:13px; font-weight:bold; margin:2px;">Important:</p>
+                        <p style="font-size:12px; margin:1px;">1. The data files must by of type ".zip", the zip archive must contains list of sequence files of type "fasta.out"</p>
+                        <p style="font-size:12px; margin:1px;">2. The maximam number of sequence is n=20.</p>
+                        <p style="font-size:12px; margin:1px;">&nbsp;&nbsp;- For MAW, the number of files must be n.</p>
+                        <p style="font-size:12px; margin:1px;">&nbsp;&nbsp;- For RAW, the number of files must be n*(n-1)/2.</p>
+                        <p style="font-size:12px; margin:1px;">3. The size of each sequence file  must be less than 10MB (demo).</p>
+                        <p style="font-size:12px; margin:1px;">4. The sequence files will be deleted at the end of the session.</p>
+                        <br />
+                        <p style="font-size:13px; font-weight:bold; margin:2px;">Select the zip archive then click upload</p>
+                        <asp:FileUpload ID="FileUpload1" runat="server" class="fileUpload"/>
+                         
+                        <br /> 
+                        
+                        <br />
+                        <div class="loading" align="center">
+                            Processing. Please wait...<br /><br />
+                            <img src="loader.gif" alt="" style="width:30px;height:30px;"/>
+                        </div>
+                        <br /><br />
+                        <div id="CaptchaBox">
+                            <table border="0" cellpadding="3" cellspacing="0" style="border:1px solid #CBD1D2; padding:10px; width:200px;">
+                                    <tr>
+                                        <td colspan="2">
+                                            <cc1:CaptchaControl ID="Captcha1" runat="server" CaptchaBackgroundNoise="Low" CaptchaLength="6"
+                                                CaptchaHeight="50" CaptchaWidth="200" CaptchaMinTimeout="5" CaptchaMaxTimeout="240"
+                                                FontColor="#D20B0C" NoiseColor="#B1B1B1" />
+                                        </td>
+                                        <td>
+                                            <asp:ImageButton ID="ImageButton1" ImageUrl="~/refresh.png" runat="server" CausesValidation="false" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-size:14px;">
+                                            Enter Text :
+                                        </td>
+                                        <td colspan="2">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <asp:TextBox ID="txtCaptcha" runat="server" EnableViewState="false" style="height:25px; font-size:13px;"></asp:TextBox>
+                                        </td>
+                                        <td>
+                                        
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">
+                                            <asp:CustomValidator ID="CustomValidator1" style="color:red;" ErrorMessage=""  OnServerValidate="ValidateCaptcha" runat="server" />
+                                        </td>
+                                    </tr>
+                            </table>
+                        
+                            <asp:Label ID="msg2" style="font-size:12px; border:1px solid #CBD1D2; background-color:#bef4ec; color:#151813; padding:5px; width:585px;"  runat="server" Width="100%" Visible="false"></asp:Label>
+                            <br /> 
+                            <asp:Button ID="upAndSearch" runat="server" Text="Upload" OnClientClick="javascript:return ValidateUploadFileType();" class="buttonstyleCss"/>  
+
+                        </div>
+                        
+                    </div>
+
+                    
+                    <br />
+                    <p  style="font-size:15px; font-weight:bold; color:red;">Step 3: Select the experiment configuration</p>
+
+                      <asp:Label ID="Label2" runat="server"  >Select word type</asp:Label>
+                     <br /><br />
+                    <asp:DropDownList ID="DropDownListWordType"   style="font-size:16px;height:20px" runat="server">
+                        <asp:ListItem Text="MAW" Value="MAW"/>
+                         <asp:ListItem Text="RAW" Value="RAW"/> 
+                    </asp:DropDownList> 
+                     <br /><br />
+                     <asp:Label ID="Label1" runat="server">Select index type (MAW)</asp:Label>
+                     <br /><br />
+                    <asp:DropDownList ID="DropDownListIndexTypeMAW" style="font-size:16px; height:20px;" runat="server">
+                           <asp:ListItem Text="MAW_LWI_SDIFF" Value="MAW_LWI_SDIFF"/>
+                           <asp:ListItem Text="MAW_LWI_INTERSECT" Value="MAW_LWI_INTERSECT"/>
+                           <asp:ListItem Text="MAW_GCC_SDIFF" Value="MAW_GCC_SDIFF"/>
+                           <asp:ListItem Text="MAW_GCC_INTERSECT" Value="MAW_GCC_INTERSECT"/>
+                           <asp:ListItem Text="MAW_JD" Value="MAW_JD"/>
+                           <asp:ListItem Text="MAW_TVD" Value="MAW_TVD"/>
+                    </asp:DropDownList>
+                      <br /><br />
+                    <asp:Label ID="Label5" runat="server">Select index type (RAW)</asp:Label>
+                     <br /><br />
+                    <asp:DropDownList ID="DropDownList1" style="font-size:16px; height:20px;" runat="server">
+                           <asp:ListItem Text="RAW_LWI" Value="RAW_LWI"/>
+                           <asp:ListItem Text="RAW_GCC" Value="RAW_GCC"/>
+                    </asp:DropDownList>
+                     <br /><br />
+                      <asp:Label ID="Label4" runat="server"  >Select output type</asp:Label>
+                     <br /><br />
+                    <asp:DropDownList ID="DropDownListOutputType"   style="font-size:16px;height:20px" runat="server">
+                        <asp:ListItem Text="Distance_Matrix" Value="Distance_Matrix"/>
+                        <asp:ListItem Text="Sorted_Difference_Tables" Value="Sorted_Difference_Tables"/>
+                    </asp:DropDownList>     
+                     
+                    <br /><br />
+               
+                 
+                    <p id="P3" style="font-size:15px; font-weight:bold; color:red;">Step 4: Run the experiment</p>
+                    
+                   <asp:Button ID="Button1"  class="buttonstyleCss" runat="server" onclick="Button1_Click" Text="&nbsp;&nbsp;Run&nbsp;&nbsp;" />
+                    <br />  <br />
+                      <hr />
+                       
+                    </div>
+                  
+                 <div runat="server" id="dirTree" visible="true">
+                 <div class="sidebar" style=" width:97%; float:left;">
+                 <h2>Results </h2>
+                      <asp:Label ID="LabelMAWRes" style="font-size:12px; border:1px solid #CBD1D2; background-color:#bef4ec; color:#151813; padding:5px; width:585px;"  runat="server" Width="100%" ></asp:Label>
+                        </div>     
+                        <hr />
+                        <p>&nbsp;</p>
+                        <br />
+
+                    </div>
+              
+                <div id="footer">
+                  
+                </div>
+            </div>
+        </div> 
+        
+    </form>
+
+    
+</body>
+
+
+
+</html>
+
