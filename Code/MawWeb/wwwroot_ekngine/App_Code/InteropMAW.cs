@@ -41,7 +41,6 @@ public class InteropMAW
 
     public void computeDiffMatrix(out  double[,] diffMatrix, int absWordType, int diffIndex)
     {
-
         // make the call to the pInvoke  method here
         double[,] diffMatrixLocal = new double[10, 10];
         diffMatrix = diffMatrixLocal;
