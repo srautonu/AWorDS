@@ -11,9 +11,15 @@
 #pragma warning(disable:4996)
 
 //
-// Number of genes used in experiment
+// Maximum number of genes that can be used in experiment
 //
 #define NUM_GENE 11
+
+//
+// Maximum length of a species name Number of genes used in experiment
+//
+
+#define MAX_SPECIES_NAME_LEN 41
 
 //
 // Maximum possible length of an absent word. To be safe this should be set to
@@ -22,6 +28,11 @@
 // complement, so the size can be 210. So, choosing limit accordingly
 //
 #define MAX_WORD_LEN 256
+
+//
+// Maximum length of a file location
+//
+#define MAX_PATH 256
 
 #define MAW     1   // Minimum abset word
 #define RAW     2   // Relative absent word
@@ -43,48 +54,26 @@
 #define RAW_GCC            ((RAW * 100) + 2)   // GC content
 
 //
-// Which type of absent word (Maw/Raw) to use
+// Global variables
 //
-#define ABSENT_WORD_TYPE    MAW
 
 //
-// Which index to use?
+// Total number of genes/species
 //
-#define DIFF_INDEX          MAW_TVD
+extern __declspec(selectany) int g_numGenes;
 
 //
 // Short name code used for each species. 
 // (Used in generating the filename for Raw/Maw sets for respective species)
 //
-extern __declspec(selectany) char* g_strSpeciesShortName[NUM_GENE] = {
-    "hu",
-    "gt",
-    "op",
-    "ga",
-    "le",
-    "mo",
-    "rb",
-    "rt",
-    "gr",
-    "bv",
-    "ch"
-};
+extern __declspec(selectany) char g_strSpeciesShortName[NUM_GENE][MAX_SPECIES_NAME_LEN];
 
 //
 // Full name of each species. 
-// Note: chimpanzee is shortened to chimp to reduce space consumption in the
-// printouts to console/file
 //
-extern __declspec(selectany) char* g_strSpeciesFullName[NUM_GENE] = {
-    "human",
-    "goat",
-    "opossum",
-    "gallus",
-    "lemur",
-    "mouse",
-    "rabbit",
-    "rat",
-    "gorilla",
-    "bovine",
-    "chimp"
-};
+extern __declspec(selectany) char g_strSpeciesFullName[NUM_GENE][MAX_SPECIES_NAME_LEN];
+
+//
+// Location of the folder that contains necessary data files
+//
+extern __declspec(selectany) char g_strDataDir[MAX_PATH];

@@ -13,10 +13,10 @@
 
 using namespace std;
 
-double GetRawBasedDiff(int i, int j)
+double GetRawBasedDiff(int i, int j, int diffIndex)
 {
     double res = 0.0;
-    char strFileName1[50], strFileName2[50];
+    char strFileName1[MAX_PATH], strFileName2[MAX_PATH];
     Set raw1, raw2;
 
     assert(i >= 0 && i < sizeof(g_strSpeciesShortName));
@@ -27,7 +27,8 @@ double GetRawBasedDiff(int i, int j)
     //
     sprintf(
         strFileName1, 
-        "%s\\%s_%s.fasta",
+        "%s\\%s\\%s_%s.fasta",
+        g_strDataDir,
         g_strSpeciesFullName[i], 
         g_strSpeciesShortName[i], 
         g_strSpeciesFullName[j]
@@ -44,16 +45,19 @@ double GetRawBasedDiff(int i, int j)
     raw1 = Set::CreateFromFile(strFileName1);
     raw2 = Set::CreateFromFile(strFileName2);
 
-#if DIFF_INDEX == RAW_LWI
-    res = 0.5 * (raw1.LengthWeightedIndex() + raw2.LengthWeightedIndex());
-#elif DIFF_INDEX == RAW_GCC
-    res = 0.5 * (raw1.GCContent() + raw2.GCContent());
-#endif
+    if (diffIndex == RAW_LWI)
+    {
+        res = 0.5 * (raw1.LengthWeightedIndex() + raw2.LengthWeightedIndex());
+    }
+    else if (diffIndex == RAW_GCC)
+    {
+        res = 0.5 * (raw1.GCContent() + raw2.GCContent());
+    }
 
     return res;
 }
 
-void runRaw(double diffMatrix[NUM_GENE][NUM_GENE])
+void runRaw(double diffMatrix[][NUM_GENE], int diffIndex)
 {
     int i, j;
 
@@ -61,7 +65,7 @@ void runRaw(double diffMatrix[NUM_GENE][NUM_GENE])
     {
         for (j = 0; j < i; j++)
         {
-            diffMatrix[i][j] = GetRawBasedDiff(i, j);
+            diffMatrix[i][j] = GetRawBasedDiff(i, j, diffIndex);
         }
     }
 }

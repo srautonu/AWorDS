@@ -15,11 +15,12 @@ double calculateTVD(
     vector<pair<int, double>> rgB
     );
 
-void runMaw(double diffMatrix[NUM_GENE][NUM_GENE])
+void runMaw(double diffMatrix[][NUM_GENE], int diffIndex)
 {
     int i, j;
     Set maw[NUM_GENE];
-    char strFileName[50];
+    Set diff, a, b;
+    char strFileName[MAX_PATH];
 
     //
     // 1. Read Input
@@ -27,39 +28,51 @@ void runMaw(double diffMatrix[NUM_GENE][NUM_GENE])
     // 3. Calculate index
     // 4. Produce the difference matrix for the 11 genes
     //
-    for (i = 0; i < NUM_GENE; i++)
+    for (i = 0; i < g_numGenes; i++)
     {
-        sprintf(strFileName, "%s.fasta.out", g_strSpeciesFullName[i]);
+        sprintf(strFileName, "%s\\%s.fasta.out", g_strDataDir, g_strSpeciesFullName[i]);
         maw[i] = Set::CreateFromFile(strFileName);
     }
 
-    for (i = 0; i < NUM_GENE; i++)
+    for (i = 0; i < g_numGenes; i++)
     {
         for (j = 0; j < i; j++)
         {
-#if DIFF_INDEX == MAW_LWI_SDIFF
-            Set diff = maw[i].SymmetricDifference(maw[j]);
-            diffMatrix[i][j] = diff.LengthWeightedIndex();
-#elif DIFF_INDEX == MAW_LWI_INTERSECT
-            Set diff = maw[i].Intersection(maw[j]);
-            diffMatrix[i][j] = -diff.LengthWeightedIndex();
-#elif DIFF_INDEX == MAW_GCC_SDIFF
-            Set diff = maw[i].SymmetricDifference(maw[j]);
-            diffMatrix[i][j] = diff.GCContent();
-#elif DIFF_INDEX == MAW_GCC_INTERSECT
-            Set diff = maw[i].Intersection(maw[j]);
-            diffMatrix[i][j] = 1.0 - diff.GCContent();
-#elif DIFF_INDEX == MAW_JD
-            Set a = maw[i].Union(maw[j]);
-            Set b = maw[i].Intersection(maw[j]);
-            diffMatrix[i][j] = 1.0 - 1.0 * b.Cardinality() / a.Cardinality();
-#elif DIFF_INDEX == MAW_TVD
-            diffMatrix[i][j] = calculateTVD(
-                                    maw[i].LengthDistribution(),
-                                    maw[j].LengthDistribution()
-                                    );
-#endif
+            switch(diffIndex)
+            {
+            case MAW_LWI_SDIFF:
+                diff = maw[i].SymmetricDifference(maw[j]);
+                diffMatrix[i][j] = diff.LengthWeightedIndex();
+                break;
 
+            case MAW_LWI_INTERSECT:
+                diff = maw[i].Intersection(maw[j]);
+                diffMatrix[i][j] = -diff.LengthWeightedIndex();
+                break;
+
+            case MAW_GCC_SDIFF:
+                diff = maw[i].SymmetricDifference(maw[j]);
+                diffMatrix[i][j] = diff.GCContent();
+                break;
+    
+            case MAW_GCC_INTERSECT:
+                diff = maw[i].Intersection(maw[j]);
+                diffMatrix[i][j] = 1.0 - diff.GCContent();
+                break;
+
+            case MAW_JD:
+                a = maw[i].Union(maw[j]);
+                b = maw[i].Intersection(maw[j]);
+                diffMatrix[i][j] = 1.0 - 1.0 * b.Cardinality() / a.Cardinality();
+                break;
+            
+            case MAW_TVD:
+                diffMatrix[i][j] = calculateTVD(
+                                        maw[i].LengthDistribution(),
+                                        maw[j].LengthDistribution()
+                                        );
+                break;
+            }
         }
     }
 }
