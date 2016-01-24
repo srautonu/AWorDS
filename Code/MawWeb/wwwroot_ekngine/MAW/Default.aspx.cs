@@ -139,56 +139,89 @@ public partial class Default : System.Web.UI.Page
     }
     private  void LaunchCommandLineMAWapp()
     {
-            try
-            {   
-                string path = Server.MapPath("~/maw/exe/");
 
-               
-                if (this.ExpPath =="")
-                    this.ExpPath = @"E:\Ekngine\ekngine.com\wwwroot_ekngine\MAW\data\www";
+        try
+        {
+            string path = Server.MapPath("~/maw/exe/");
 
-                string[] arr = Directory.GetFiles(ExpPath, "*.fasta.out"); 
-                
-                Process p = new Process();
-                p.StartInfo.UseShellExecute = false;
-                p.StartInfo.RedirectStandardOutput = true;
-                p.StartInfo.FileName = path + @"\maw.exe";
+            Dictionary<string, string> SeqNames = new Dictionary<string, string>();
+            if (this.ExpPath =="")
+                this.ExpPath = @"E:\Ekngine\ekngine.com\wwwroot_ekngine\MAW\data\www";
 
-                 //"\"MAW_TVD\" \"MAW\" \"E:\Ekngine\ekngine.com\wwwroot_ekngine\MAW\data\exp1972"";
-                string wordType = this.DropDownListWordType.SelectedValue;
 
-                string indexType = ""; 
-                if (wordType == "MAW")
-                {
-                    indexType = this.DropDownListIndexTypeMAW.SelectedValue;
-                }
-                else if  (wordType == "RAW")
-                {
-                    indexType = this.DropDownListIndexTypeMAW.SelectedValue;
-                }
-
-                p.StartInfo.Arguments = String.Format("\"{0}\" \"{1}\" \"{2}\" \"{3}\" ", indexType, wordType, ExpPath, arr.Length);
-
-                bool render = false;
-                bool allOkay = true;
-                if (allOkay)
-                {
-                    
-                    p.Start();
-                    string output = p.StandardOutput.ReadToEnd();
-                    p.WaitForExit();
-                    string br = "<br />";
-                    LabelMAWRes.Text = output.Replace("\r\n", br);
- 
-                    this.LabelMAWRes.Visible = true;
-                    //this.dirTree.Visible = true;
-                }
-            }
-            catch (System.Exception ex)
+            string SpeciesOrderPath = Path.Combine(ExpPath, "SpeciesOrder.txt");
+            if (!File.Exists(SpeciesOrderPath))
             {
-                string err = ex.Message;
-                // Log error.
+                this.LabelMAWRes.Visible = true;
+                this.LabelMAWRes.Text = "File SpeciesOrder.txt does not exists!";
+                return;
             }
+            string[] SpeciesArray = File.ReadAllLines(SpeciesOrderPath);
+
+            foreach(string s in SpeciesArray)
+            {
+                string[] temp = s.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                SeqNames.Add(temp[0], temp[1]);
+            }
+
+
+
+            #region old code
+            //string[] arr = Directory.GetFiles(ExpPath, "*.fasta.out");
+            //Process p = new Process();
+            //p.StartInfo.UseShellExecute = false;
+            //p.StartInfo.RedirectStandardOutput = true;
+            //p.StartInfo.FileName = path + @"\maw.exe";
+            //"\"MAW_TVD\" \"MAW\" \"E:\Ekngine\ekngine.com\wwwroot_ekngine\MAW\data\exp1972"";
+            //mawObject.computeDiffMatrix();
+            //p.StartInfo.Arguments = String.Format("\"{0}\" \"{1}\" \"{2}\" \"{3}\" ", indexType, wordType, ExpPath, arr.Length);
+            //bool render = false;
+            //bool allOkay = true;
+            //if (allOkay)
+            //{
+            //    p.Start();
+            //    string output = p.StandardOutput.ReadToEnd();
+            //    p.WaitForExit();
+            //    string br = "<br />";
+            //    LabelMAWRes.Text = output.Replace("\r\n", br);
+
+            //    this.LabelMAWRes.Visible = true;
+            //    //this.dirTree.Visible = true;
+            //}
+            #endregion
+
+            int absWordType = 1;
+            int diffIndex = 1;
+            string wordType = this.DropDownListWordType.SelectedValue;
+            string indexType = "";
+            if (wordType == "1")
+            {
+                absWordType = 1;
+                indexType = this.DropDownListIndexTypeMAW.SelectedValue;
+            }
+            else if (wordType == "2")
+            {
+                absWordType = 2;
+                indexType = this.DropDownListIndexTypeMAW.SelectedValue;
+            }
+
+            diffIndex = int.Parse(indexType);
+            InteropMAW mawObject = new InteropMAW();
+            
+            // call C# methods of the mawObject here 
+            int ret = mawObject.Init(SeqNames.Keys.ToArray(), SeqNames.Values.ToArray(), SeqNames.Count, ExpPath);
+            double[,] diffMatrixLocal = new double[SeqNames.Count, SeqNames.Count];
+            mawObject.computeDiffMatrix(out diffMatrixLocal, absWordType, diffIndex);
+          
+            // display the result 
+            
+        }
+        catch (System.Exception ex)
+        {
+            string err = ex.Message;
+            this.LabelMAWRes.Visible = true;
+            this.LabelMAWRes.Text = err;
+        }
     }
 
     protected void ButtonCreateExp_Click(object sender, EventArgs e)

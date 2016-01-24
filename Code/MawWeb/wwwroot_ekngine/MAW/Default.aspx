@@ -227,33 +227,33 @@
                       <asp:Label ID="Label2" runat="server"  >Select word type</asp:Label>
                      <br /><br />
                     <asp:DropDownList ID="DropDownListWordType"   style="font-size:16px;height:20px" runat="server">
-                        <asp:ListItem Text="MAW" Value="MAW"/>
-                         <asp:ListItem Text="RAW" Value="RAW"/> 
+                        <asp:ListItem Text="MAW - Minimum abset word" Value="1"/>
+                         <asp:ListItem Text="RAW - Relative absent word" Value="2"/> 
                     </asp:DropDownList> 
                      <br /><br />
                      <asp:Label ID="Label1" runat="server">Select index type (MAW)</asp:Label>
                      <br /><br />
                     <asp:DropDownList ID="DropDownListIndexTypeMAW" style="font-size:16px; height:20px;" runat="server">
-                           <asp:ListItem Text="MAW_LWI_SDIFF" Value="MAW_LWI_SDIFF"/>
-                           <asp:ListItem Text="MAW_LWI_INTERSECT" Value="MAW_LWI_INTERSECT"/>
-                           <asp:ListItem Text="MAW_GCC_SDIFF" Value="MAW_GCC_SDIFF"/>
-                           <asp:ListItem Text="MAW_GCC_INTERSECT" Value="MAW_GCC_INTERSECT"/>
-                           <asp:ListItem Text="MAW_JD" Value="MAW_JD"/>
-                           <asp:ListItem Text="MAW_TVD" Value="MAW_TVD"/>
+                           <asp:ListItem Text="MAW_LWI_SDIFF - Length weighted index of symmetric difference" Value="1"/>
+                           <asp:ListItem Text="MAW_LWI_INTERSECT - Length weighted index of intersection" Value="2"/>
+                           <asp:ListItem Text="MAW_GCC_SDIFF - GC content of symmetric difference" Value="3"/>
+                           <asp:ListItem Text="MAW_GCC_INTERSECT - GC content of intersection" Value="4"/>
+                           <asp:ListItem Text="MAW_JD - Jaccard Distance" Value="5"/>
+                           <asp:ListItem Text="MAW_TVD - MAW_TVD" Value="6"/>
                     </asp:DropDownList>
                       <br /><br />
                     <asp:Label ID="Label5" runat="server">Select index type (RAW)</asp:Label>
                      <br /><br />
                     <asp:DropDownList ID="DropDownList1" style="font-size:16px; height:20px;" runat="server">
-                           <asp:ListItem Text="RAW_LWI" Value="RAW_LWI"/>
-                           <asp:ListItem Text="RAW_GCC" Value="RAW_GCC"/>
+                           <asp:ListItem Text="RAW_LWI - Relative absent word Length weighted index" Value="1"/>
+                           <asp:ListItem Text="RAW_GCC - Relative absent word GC content" Value="2"/>
                     </asp:DropDownList>
                      <br /><br />
                       <asp:Label ID="Label4" runat="server"  >Select output type</asp:Label>
                      <br /><br />
                     <asp:DropDownList ID="DropDownListOutputType"   style="font-size:16px;height:20px" runat="server">
-                        <asp:ListItem Text="Distance_Matrix" Value="Distance_Matrix"/>
-                        <asp:ListItem Text="Sorted_Difference_Tables" Value="Sorted_Difference_Tables"/>
+                        <asp:ListItem Text="Distance Matrix" Value="Distance_Matrix"/>
+                        <asp:ListItem Text="Sorted Difference Tables" Value="Sorted_Difference_Tables"/>
                     </asp:DropDownList>     
                      
                     <br /><br />
@@ -275,21 +275,12 @@
                         <hr />
                         <p>&nbsp;</p>
                         <br />
-
                     </div>
-              
-                <div id="footer">
-                  
+                <div id="footer">   
                 </div>
             </div>
         </div> 
-        
     </form>
-
-    
 </body>
-
-
-
 </html>
 
