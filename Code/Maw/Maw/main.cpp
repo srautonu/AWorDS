@@ -37,7 +37,7 @@ void PrintDiffMatrix(double diffMatrix[NUM_GENE][NUM_GENE])
 
         for (j = 0; j < i; j++)
         {
-            printf("%8.5lf", diffMatrix[i][j]);
+            printf("%5.2lf", diffMatrix[i][j]);
             printf("%s", (j == i - 1) ? "" : ", ");
         }
 
@@ -52,6 +52,9 @@ int main()
     // Change the following 2 variables to run with different
     // absent word type (RAW) and diff indices.
     //
+    //int absWordType = RAW;
+    //int diffIndex = RAW_LWI;
+
     int absWordType = MAW;
     int diffIndex = MAW_LWI_SDIFF;
 
@@ -59,7 +62,8 @@ int main()
     // Change the following variable to change the data folder location
     //
     //char *strDataDir = ".";
-    char *strDataDir = "C:\\gitHub\\MAW\\Code\\Data\\NoRC\\Input\\Maw";
+    //char *strDataDir = "C:\\gitHub\\MAW\\Data\\NoRC\\Input\\Raw";
+    char *strDataDir = "C:\\gitHub\\MAW\\Data\\NoRC\\Input\\Maw";
 
     //
     // Change the following variables for running a different set of species/gene sequences

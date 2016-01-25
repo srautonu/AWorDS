@@ -274,7 +274,8 @@
                  </div>     
                         <hr />
                         <p>&nbsp;</p>
-                        <br />               </div>
+                        <br />
+               </div>
                 <div id="footer">   
                 </div>
             </div>

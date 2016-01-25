@@ -27,7 +27,7 @@ double GetRawBasedDiff(int i, int j, int diffIndex)
     //
     sprintf(
         strFileName1, 
-        "%s\\%s\\%s_%s.fasta",
+        "%s\\%s\\%s_%s.raw.txt",
         g_strDataDir,
         g_strSpeciesFullName[i], 
         g_strSpeciesShortName[i], 
@@ -36,7 +36,8 @@ double GetRawBasedDiff(int i, int j, int diffIndex)
     
     sprintf(
         strFileName2,
-        "%s\\%s_%s.fasta",
+        "%s\\%s\\%s_%s.raw.txt",
+        g_strDataDir,
         g_strSpeciesFullName[j],
         g_strSpeciesShortName[j],
         g_strSpeciesFullName[i]
