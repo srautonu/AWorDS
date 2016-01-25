@@ -16,7 +16,7 @@
     <link href="jquery-ui.css" rel="stylesheet" />
     <link href="common.css" rel="stylesheet" />
     <link href="justified-nav.css" rel="stylesheet"/>
-
+      <link rel="stylesheet" href="/style/table.css" type="text/css" media="screen"/>
     <!-- jit -->
     <link type="text/css" href="jit/css/base.css" rel="stylesheet" />
     <link type="text/css" href="jit/css/Spacetree.css" rel="stylesheet" />
@@ -257,25 +257,24 @@
                     </asp:DropDownList>     
                      
                     <br /><br />
-               
-                 
+                
                     <p id="P3" style="font-size:15px; font-weight:bold; color:red;">Step 4: Run the experiment</p>
                     
                    <asp:Button ID="Button1"  class="buttonstyleCss" runat="server" onclick="Button1_Click" Text="&nbsp;&nbsp;Run&nbsp;&nbsp;" />
                     <br />  <br />
-                      <hr />
-                       
+                      <hr />                       
                     </div>
-                  
+
                  <div runat="server" id="dirTree" visible="true">
-                 <div class="sidebar" style=" width:97%; float:left;">
+                 <div id="res" >
+               
                  <h2>Results </h2>
-                      <asp:Label ID="LabelMAWRes" style="font-size:12px; border:1px solid #CBD1D2; background-color:#bef4ec; color:#151813; padding:5px; width:585px;"  runat="server" Width="100%" ></asp:Label>
-                        </div>     
+                       <br /> 
+                      <asp:Label ID="LabelMAWRes" style="padding:5px; "  runat="server" Width="100%" ></asp:Label>
+                 </div>     
                         <hr />
                         <p>&nbsp;</p>
-                        <br />
-                    </div>
+                        <br />               </div>
                 <div id="footer">   
                 </div>
             </div>

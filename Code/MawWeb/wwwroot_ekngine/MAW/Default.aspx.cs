@@ -1,4 +1,5 @@
 ﻿
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,10 +19,11 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
- 
- 
+
+
 public partial class Default : System.Web.UI.Page
 {
+    bool testing = false;
     string ExpName
     {
         get
@@ -63,22 +65,24 @@ public partial class Default : System.Web.UI.Page
         }
 
     }
-    
+
     protected void Page_Load(object sender, EventArgs e)
     {
-        this.msg1.Visible= !String.IsNullOrEmpty(this.ExpName);
+        this.msg1.Visible = !String.IsNullOrEmpty(this.ExpName);
         this.msg1.Text = "Experiment name:" + this.ExpName;
+
+         if (testing)
+            LaunchCommandLineMAWapp();
     }
- 
+
     protected void uploadFiles()
     {
         this.txtCaptcha.Text = "";
         bool dataOkay = false;
-         
+
         dataOkay = this.FileUpload1.HasFile;
         if (dataOkay)
         {
-           
             try
             {
                 string fileName = this.FileUpload1.FileName;
@@ -87,23 +91,20 @@ public partial class Default : System.Web.UI.Page
 
                 ZipArchive archive = ZipFile.OpenRead(Path.Combine(this.ExpPath, fileName));
                 ZipFileExtensions.ExtractToDirectory(archive, ExpPath);
-                    
+
                 this.msg2.Visible = true;
                 this.msg2.Text = "Files uploaded successfully.";
-                 
-                
             }
             catch (System.Exception)
             {
                 this.msg2.Visible = true;
                 this.msg2.Text = "Error uploading files.";
             }
-        }   
+        }
     }
 
     protected void ValidateCaptcha(object sender, ServerValidateEventArgs e)
     {
-
         Captcha1.ValidateCaptcha(txtCaptcha.Text.Trim());
         e.IsValid = Captcha1.UserValidated;
         if (e.IsValid)
@@ -114,47 +115,59 @@ public partial class Default : System.Web.UI.Page
         {
             this.txtCaptcha.Text = "";
             this.CustomValidator1.Text = "Captcha mismatch.";
-           
         }
     }
- 
+
     protected void Button1_Click(object sender, EventArgs e)
     {
         LaunchCommandLineMAWapp();
     }
     protected void Page_PreRender(object sender, EventArgs e)
     {
-        
-    }
-    private  void LaunchCommandLineMAWapp()
-    {
 
+    }
+    private void LaunchCommandLineMAWapp()
+    {
         try
         {
             string path = Server.MapPath("~/maw/dll/");
-
             Dictionary<string, string> SeqNames = new Dictionary<string, string>();
-            if (this.ExpPath =="")
+
+            #region testing only
+            if (testing)
+            {
+                SeqNames.Add("human", "");
+                SeqNames.Add("goat", "");
+                SeqNames.Add("opossum", "");
+                SeqNames.Add("gallus", "");
+                SeqNames.Add("lemur", "");
+                SeqNames.Add("mouse", "");
+                SeqNames.Add("rabbit", "");
+                SeqNames.Add("rat", "");
+                SeqNames.Add("gorilla", "");
+                SeqNames.Add("bovine", "");
+                SeqNames.Add("chimp", "");
+            }
+            #endregion
+
+            if (this.ExpPath == "")
                 this.ExpPath = @"E:\Ekngine\ekngine.com\wwwroot_ekngine\MAW\data\www";
-
-
             string SpeciesOrderPath = Path.Combine(ExpPath, "SpeciesOrder.txt");
-            if (!File.Exists(SpeciesOrderPath))
+            if (!File.Exists(SpeciesOrderPath) && !testing)
             {
                 this.LabelMAWRes.Visible = true;
                 this.LabelMAWRes.Text = "File SpeciesOrder.txt does not exists!";
                 return;
             }
-            string[] SpeciesArray = File.ReadAllLines(SpeciesOrderPath);
-
-            foreach(string s in SpeciesArray)
+            if (!testing)
             {
-                string[] temp = s.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                SeqNames.Add(temp[0], temp[1]);
+                string[] SpeciesArray = File.ReadAllLines(SpeciesOrderPath);
+                foreach (string s in SpeciesArray)
+                {
+                    string[] temp = s.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    SeqNames.Add(temp[0], temp[1]);
+                }
             }
-
-
-
             #region old code
             //string[] arr = Directory.GetFiles(ExpPath, "*.fasta.out");
             //Process p = new Process();
@@ -195,34 +208,69 @@ public partial class Default : System.Web.UI.Page
             }
 
             diffIndex = int.Parse(indexType);
-            
-            // call C# methods of the mawObject here 
-            int ret = InteropMAW.Initialize(SeqNames.Keys.ToArray(), SeqNames.Values.ToArray(), SeqNames.Count, ExpPath);
-            double[,] diffMatrixLocal = new double[SeqNames.Count, SeqNames.Count];
-            InteropMAW.getDiffMatrix(diffMatrixLocal, absWordType, diffIndex);
 
+            // call C# methods of the mawObject here 
+
+            double[,] diffMatrixLocal = new double[SeqNames.Count, SeqNames.Count];
+            if (!testing)
+            {
+                int ret = InteropMAW.Initialize(SeqNames.Keys.ToArray(), SeqNames.Values.ToArray(), SeqNames.Count, ExpPath);
+                InteropMAW.getDiffMatrix(diffMatrixLocal, absWordType, diffIndex);
+            }
             //
             // display the result in the existing (less appealing) format
             // TODO: Ali, perhaps the data could be represented in tabular fashion, now that
             // you have the actual matrix
             //
-            string strDisplay = "";
+
+            #region format the output as table
+            StringBuilder talbeSB = new StringBuilder();
+             
+            talbeSB.Append("<table class=\"table1\">");
+            talbeSB.Append("<thead>");
+            talbeSB.Append("<tr>");
+            talbeSB.Append("<th></th>");
             for (int i = 0; i < SeqNames.Count; i++)
             {
-                strDisplay += "{ ";
-                for (int j = 0; j < i; j++)
-                {
-                    strDisplay += diffMatrixLocal.GetValue(i, j);
-                    strDisplay += (j == i - 1) ? "" : ", ";
-                }
-
-                strDisplay += " }";
-                if (i != SeqNames.Count - 1)
-                    strDisplay += ",";
-                strDisplay += "<br />";
+                talbeSB.Append(string.Format("<th scope = \"col\" abbr=\"Starter\">{0}</th>", SeqNames.Keys.ElementAt(i)));
             }
+            talbeSB.Append("</tr>");
+            talbeSB.Append("</thead>");
+            talbeSB.Append("<tbody>");
+            for (int i = 0; i < SeqNames.Count; i++)
+            {
+                talbeSB.Append("<tr>");
+                talbeSB.Append(string.Format("<th scope=\"row\">{0}</th>", SeqNames.Keys.ElementAt(i)));
+                for (int j = 0; j <= i; j++)
+                {
+                    //talbeSB.Append(string.Format("<td>{0}, {1}</td>", i, j));
+                    talbeSB.Append(string.Format("<td>{0}</td>", diffMatrixLocal.GetValue(i, j)));
+                }
+                talbeSB.Append("</tr>");
+            }
+            talbeSB.Append("</tbody>");
+            talbeSB.Append("</table>");
+            #endregion
 
-            LabelMAWRes.Text = strDisplay;
+            #region old format
+            //string strDisplay = "";
+            //for (int i = 0; i < SeqNames.Count; i++)
+            //{
+            //    strDisplay += "{ ";
+            //    for (int j = 0; j < i; j++)
+            //    {
+            //        strDisplay += diffMatrixLocal.GetValue(i, j);
+            //        strDisplay += (j == i - 1) ? "" : ", ";
+            //    }
+
+            //    strDisplay += " }";
+            //    if (i != SeqNames.Count - 1)
+            //        strDisplay += ",";
+            //    strDisplay += "<br />";
+            //}
+            #endregion
+
+            LabelMAWRes.Text = talbeSB.ToString();
             LabelMAWRes.Visible = true;
         }
         catch (System.Exception ex)
@@ -237,7 +285,7 @@ public partial class Default : System.Web.UI.Page
     {
         string expName = this.TextBoxExpName.Text.Trim();
         string path = Server.MapPath("~/maw/data") + "\\" + expName;
-        
+
         msg1.Visible = true;
         if (Directory.Exists(path))
         {
@@ -252,13 +300,16 @@ public partial class Default : System.Web.UI.Page
                 ExpName = expName;
                 msg1.Text = "New experiment has been created successfully";
             }
-            catch(System.Exception ex)
+            catch (System.Exception ex)
             {
                 msg1.Text = "Error";
             }
-        
+
         }
 
     }
 }
     
+
+
+ 
