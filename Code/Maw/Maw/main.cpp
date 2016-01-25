@@ -15,6 +15,12 @@ extern "C" __declspec(dllexport) int Initialize(
     char *dataDir
     );
 
+extern "C" __declspec(dllexport) int getDiffMatrix(
+    double diffMatrix[][NUM_GENE],
+    int absWordType,
+    int diffIndex
+    );
+
 
 extern void runMaw(double diffMatrix[][NUM_GENE], int diffIndex);
 extern void runRaw(double diffMatrix[][NUM_GENE], int diffIndex);
@@ -52,7 +58,8 @@ int main()
     //
     // Change the following variable to change the data folder location
     //
-    char *strDataDir = ".";
+    //char *strDataDir = ".";
+    char *strDataDir = "C:\\gitHub\\MAW\\Code\\Data\\NoRC\\Input\\Maw";
 
     //
     // Change the following variables for running a different set of species/gene sequences
@@ -93,18 +100,10 @@ int main()
     };
 
     double diffMatrix[NUM_GENE][NUM_GENE] = {0};
-    int i;
 
     Initialize(strSpeciesFullName, strSpeciesShortName, nGenes, strDataDir);
 
-    if (absWordType == RAW)
-    {
-        runRaw(diffMatrix, diffIndex);
-    }
-    else if (absWordType == MAW)
-    {
-        runMaw(diffMatrix, diffIndex);
-    }
+    getDiffMatrix(diffMatrix, absWordType, diffIndex);
 
     PrintDiffMatrix(diffMatrix);
     

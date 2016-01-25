@@ -40,18 +40,18 @@
 //
 // Defined constants for different MAW based similarity matrices
 //
-#define MAW_LWI_SDIFF       ((MAW * 100) + 1)  // Length weighted index of symmetric difference
-#define MAW_LWI_INTERSECT   ((MAW * 100) + 2)  // Length weighted index of intersection
-#define MAW_GCC_SDIFF       ((MAW * 100) + 3)  // GC content of symmetric difference
-#define MAW_GCC_INTERSECT   ((MAW * 100) + 4)  // GC content of intersection
-#define MAW_JD              ((MAW * 100) + 5)  // Jaccard Distance
-#define MAW_TVD             ((MAW * 100) + 6)  // Jaccard Distance
+#define MAW_LWI_SDIFF       1  // Length weighted index of symmetric difference
+#define MAW_LWI_INTERSECT   2  // Length weighted index of intersection
+#define MAW_GCC_SDIFF       3  // GC content of symmetric difference
+#define MAW_GCC_INTERSECT   4  // GC content of intersection
+#define MAW_JD              5  // Jaccard Distance
+#define MAW_TVD             6  // Jaccard Distance
 
 //
 // Defined constants for different RAW based similarity matrices
 //
-#define RAW_LWI            ((RAW * 100) + 1)   // Length weighted index
-#define RAW_GCC            ((RAW * 100) + 2)   // GC content
+#define RAW_LWI            1   // Length weighted index
+#define RAW_GCC            2   // GC content
 
 //
 // Global variables

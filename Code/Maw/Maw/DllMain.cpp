@@ -67,10 +67,7 @@ extern "C" __declspec(dllexport) int getDiffMatrix(double diffMatrix[][NUM_GENE]
     //
     // Sanity check
     //
-    if (diffIndex / 100 != absWordType)
-    {
-        return -1;
-    }
+
 
     if (absWordType == RAW)
     {
@@ -80,6 +77,7 @@ extern "C" __declspec(dllexport) int getDiffMatrix(double diffMatrix[][NUM_GENE]
     {
         runMaw(diffMatrix, diffIndex);
     }
+    
 
     return 0;
 }
