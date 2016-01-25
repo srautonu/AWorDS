@@ -42,32 +42,33 @@ void runMaw(double diffMatrix[][NUM_GENE], int diffIndex)
             {
             case MAW_LWI_SDIFF:
                 diff = maw[i].SymmetricDifference(maw[j]);
-                diffMatrix[i][j] = diff.LengthWeightedIndex();
+                diffMatrix[i][j] = diffMatrix[j][i] = diff.LengthWeightedIndex();
                 break;
 
             case MAW_LWI_INTERSECT:
                 diff = maw[i].Intersection(maw[j]);
-                diffMatrix[i][j] = -diff.LengthWeightedIndex();
+                diffMatrix[i][j] = diffMatrix[j][i] = -diff.LengthWeightedIndex();
                 break;
 
             case MAW_GCC_SDIFF:
                 diff = maw[i].SymmetricDifference(maw[j]);
-                diffMatrix[i][j] = diff.GCContent();
+                diffMatrix[i][j] = diffMatrix[j][i] = diff.GCContent();
                 break;
     
             case MAW_GCC_INTERSECT:
                 diff = maw[i].Intersection(maw[j]);
-                diffMatrix[i][j] = 1.0 - diff.GCContent();
+                diffMatrix[i][j] = diffMatrix[j][i] = 1.0 - diff.GCContent();
                 break;
 
             case MAW_JD:
                 a = maw[i].Union(maw[j]);
                 b = maw[i].Intersection(maw[j]);
-                diffMatrix[i][j] = 1.0 - 1.0 * b.Cardinality() / a.Cardinality();
+                diffMatrix[i][j] = diffMatrix[j][i] = 1.0 - 1.0 * b.Cardinality() / a.Cardinality();
                 break;
             
             case MAW_TVD:
-                diffMatrix[i][j] = calculateTVD(
+                diffMatrix[i][j] = diffMatrix[j][i]
+                                 = calculateTVD(
                                         maw[i].LengthDistribution(),
                                         maw[j].LengthDistribution()
                                         );

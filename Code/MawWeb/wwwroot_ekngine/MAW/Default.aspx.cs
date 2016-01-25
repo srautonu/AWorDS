@@ -168,29 +168,6 @@ public partial class Default : System.Web.UI.Page
                     SeqNames.Add(temp[0], temp[1]);
                 }
             }
-            #region old code
-            //string[] arr = Directory.GetFiles(ExpPath, "*.fasta.out");
-            //Process p = new Process();
-            //p.StartInfo.UseShellExecute = false;
-            //p.StartInfo.RedirectStandardOutput = true;
-            //p.StartInfo.FileName = path + @"\maw.exe";
-            //"\"MAW_TVD\" \"MAW\" \"E:\Ekngine\ekngine.com\wwwroot_ekngine\MAW\data\exp1972"";
-            //mawObject.computeDiffMatrix();
-            //p.StartInfo.Arguments = String.Format("\"{0}\" \"{1}\" \"{2}\" \"{3}\" ", indexType, wordType, ExpPath, arr.Length);
-            //bool render = false;
-            //bool allOkay = true;
-            //if (allOkay)
-            //{
-            //    p.Start();
-            //    string output = p.StandardOutput.ReadToEnd();
-            //    p.WaitForExit();
-            //    string br = "<br />";
-            //    LabelMAWRes.Text = output.Replace("\r\n", br);
-
-            //    this.LabelMAWRes.Visible = true;
-            //    //this.dirTree.Visible = true;
-            //}
-            #endregion
 
             int absWordType = 1;
             int diffIndex = 1;
@@ -244,7 +221,7 @@ public partial class Default : System.Web.UI.Page
                 for (int j = 0; j <= i; j++)
                 {
                     //talbeSB.Append(string.Format("<td>{0}, {1}</td>", i, j));
-                    talbeSB.Append(string.Format("<td>{0}</td>", diffMatrixLocal.GetValue(i, j)));
+                    talbeSB.Append(string.Format("<td>{0}</td>", Math.Round((double)diffMatrixLocal.GetValue(i, j), 2)));
                 }
                 talbeSB.Append("</tr>");
             }
