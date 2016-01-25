@@ -85,26 +85,15 @@ public partial class Default : System.Web.UI.Page
                 //this.SequenceNames.Add();
                 this.FileUpload1.SaveAs(Path.Combine(this.ExpPath, fileName));
 
-                using (ZipArchive archive = ZipFile.OpenRead(Path.Combine(this.ExpPath, fileName)))
-                {
-                    int i = 1;
-                    foreach (ZipArchiveEntry entry in archive.Entries)
-                    {
-                        if (entry.FullName.EndsWith(".out", StringComparison.OrdinalIgnoreCase))
-                        {
-                            this.SequenceNames.Add(entry.FullName);
-                            entry.ExtractToFile(Path.Combine(this.ExpPath, "seq-"+i.ToString() + ".fasta.out"));
-                            i++;
-                        }
-                    }
-                } 
-
+                ZipArchive archive = ZipFile.OpenRead(Path.Combine(this.ExpPath, fileName));
+                ZipFileExtensions.ExtractToDirectory(archive, ExpPath);
+                    
                 this.msg2.Visible = true;
                 this.msg2.Text = "Files uploaded successfully.";
                  
                 
             }
-            catch (System.Exception ex)
+            catch (System.Exception)
             {
                 this.msg2.Visible = true;
                 this.msg2.Text = "Error uploading files.";
@@ -142,7 +131,7 @@ public partial class Default : System.Web.UI.Page
 
         try
         {
-            string path = Server.MapPath("~/maw/exe/");
+            string path = Server.MapPath("~/maw/dll/");
 
             Dictionary<string, string> SeqNames = new Dictionary<string, string>();
             if (this.ExpPath =="")
@@ -202,19 +191,39 @@ public partial class Default : System.Web.UI.Page
             else if (wordType == "2")
             {
                 absWordType = 2;
-                indexType = this.DropDownListIndexTypeMAW.SelectedValue;
+                indexType = this.DropDownListIndexTypeRAW.SelectedValue;
             }
 
             diffIndex = int.Parse(indexType);
-            InteropMAW mawObject = new InteropMAW();
             
             // call C# methods of the mawObject here 
-            int ret = mawObject.Init(SeqNames.Keys.ToArray(), SeqNames.Values.ToArray(), SeqNames.Count, ExpPath);
+            int ret = InteropMAW.Initialize(SeqNames.Keys.ToArray(), SeqNames.Values.ToArray(), SeqNames.Count, ExpPath);
             double[,] diffMatrixLocal = new double[SeqNames.Count, SeqNames.Count];
-            mawObject.computeDiffMatrix(out diffMatrixLocal, absWordType, diffIndex);
-          
-            // display the result 
-            
+            InteropMAW.getDiffMatrix(diffMatrixLocal, absWordType, diffIndex);
+
+            //
+            // display the result in the existing (less appealing) format
+            // TODO: Ali, perhaps the data could be represented in tabular fashion, now that
+            // you have the actual matrix
+            //
+            string strDisplay = "";
+            for (int i = 0; i < SeqNames.Count; i++)
+            {
+                strDisplay += "{ ";
+                for (int j = 0; j < i; j++)
+                {
+                    strDisplay += diffMatrixLocal.GetValue(i, j);
+                    strDisplay += (j == i - 1) ? "" : ", ";
+                }
+
+                strDisplay += " }";
+                if (i != SeqNames.Count - 1)
+                    strDisplay += ",";
+                strDisplay += "<br />";
+            }
+
+            LabelMAWRes.Text = strDisplay;
+            LabelMAWRes.Visible = true;
         }
         catch (System.Exception ex)
         {

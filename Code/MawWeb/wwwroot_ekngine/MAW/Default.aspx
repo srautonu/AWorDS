@@ -224,29 +224,29 @@
                     <br />
                     <p  style="font-size:15px; font-weight:bold; color:red;">Step 3: Select the experiment configuration</p>
 
-                      <asp:Label ID="Label2" runat="server"  >Select word type</asp:Label>
+                      <asp:Label ID="Label2" runat="server"  >Select type of absent word</asp:Label>
                      <br /><br />
                     <asp:DropDownList ID="DropDownListWordType"   style="font-size:16px;height:20px" runat="server">
                         <asp:ListItem Text="MAW - Minimum abset word" Value="1"/>
-                         <asp:ListItem Text="RAW - Relative absent word" Value="2"/> 
+                        <asp:ListItem Text="RAW - Relative absent word" Value="2"/> 
                     </asp:DropDownList> 
                      <br /><br />
-                     <asp:Label ID="Label1" runat="server">Select index type (MAW)</asp:Label>
+                     <asp:Label ID="Label1" runat="server">Select MAW based dissimilarity index</asp:Label>
                      <br /><br />
                     <asp:DropDownList ID="DropDownListIndexTypeMAW" style="font-size:16px; height:20px;" runat="server">
-                           <asp:ListItem Text="MAW_LWI_SDIFF - Length weighted index of symmetric difference" Value="1"/>
-                           <asp:ListItem Text="MAW_LWI_INTERSECT - Length weighted index of intersection" Value="2"/>
-                           <asp:ListItem Text="MAW_GCC_SDIFF - GC content of symmetric difference" Value="3"/>
-                           <asp:ListItem Text="MAW_GCC_INTERSECT - GC content of intersection" Value="4"/>
-                           <asp:ListItem Text="MAW_JD - Jaccard Distance" Value="5"/>
-                           <asp:ListItem Text="MAW_TVD - MAW_TVD" Value="6"/>
+                           <asp:ListItem Text="MAW_LWI_SDIFF - Length weighted index of symmetric difference of MAW sets" Value="1"/>
+                           <asp:ListItem Text="MAW_LWI_INTERSECT - Length weighted index of intersection of MAW sets" Value="2"/>
+                           <asp:ListItem Text="MAW_GCC_SDIFF - GC content of symmetric difference of MAW sets" Value="3"/>
+                           <asp:ListItem Text="MAW_GCC_INTERSECT - GC content of intersection of MAW sets" Value="4"/>
+                           <asp:ListItem Text="MAW_JD - Jaccard Distance of MAW sets" Value="5"/>
+                           <asp:ListItem Text="MAW_TVD - Total Variation Distance of MAW sets" Value="6"/>
                     </asp:DropDownList>
                       <br /><br />
-                    <asp:Label ID="Label5" runat="server">Select index type (RAW)</asp:Label>
+                    <asp:Label ID="Label5" runat="server">Select RAW based dissimilarity index</asp:Label>
                      <br /><br />
-                    <asp:DropDownList ID="DropDownList1" style="font-size:16px; height:20px;" runat="server">
-                           <asp:ListItem Text="RAW_LWI - Relative absent word Length weighted index" Value="1"/>
-                           <asp:ListItem Text="RAW_GCC - Relative absent word GC content" Value="2"/>
+                    <asp:DropDownList ID="DropDownListIndexTypeRAW" style="font-size:16px; height:20px;" runat="server">
+                           <asp:ListItem Text="RAW_LWI - Length weighted index of RAW set" Value="1"/>
+                           <asp:ListItem Text="RAW_GCC - GC content of RAW set" Value="2"/>
                     </asp:DropDownList>
                      <br /><br />
                       <asp:Label ID="Label4" runat="server"  >Select output type</asp:Label>
