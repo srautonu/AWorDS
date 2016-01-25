@@ -89,9 +89,10 @@ public partial class Default : System.Web.UI.Page
                 //this.SequenceNames.Add();
                 this.FileUpload1.SaveAs(Path.Combine(this.ExpPath, fileName));
 
-                ZipArchive archive = ZipFile.OpenRead(Path.Combine(this.ExpPath, fileName));
-                ZipFileExtensions.ExtractToDirectory(archive, ExpPath);
-
+                using (ZipArchive archive = ZipFile.OpenRead(Path.Combine(this.ExpPath, fileName)))
+                {
+                    ZipFileExtensions.ExtractToDirectory(archive, ExpPath);
+                }
                 this.msg2.Visible = true;
                 this.msg2.Text = "Files uploaded successfully.";
             }

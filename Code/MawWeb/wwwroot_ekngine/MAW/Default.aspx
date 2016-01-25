@@ -183,8 +183,8 @@
                                     <tr>
                                         <td colspan="2">
                                             <cc1:CaptchaControl ID="Captcha1" runat="server" CaptchaBackgroundNoise="Low" CaptchaLength="6"
-                                                CaptchaHeight="50" CaptchaWidth="200" CaptchaMinTimeout="5" CaptchaMaxTimeout="240"
-                                                FontColor="#D20B0C" NoiseColor="#B1B1B1" />
+                                                CaptchaHeight="32" CaptchaWidth="150" CaptchaMinTimeout="5" CaptchaMaxTimeout="240"
+                                                FontColor="Blue" NoiseColor="#B1B1B1" />
                                         </td>
                                         <td>
                                             <asp:ImageButton ID="ImageButton1" ImageUrl="~/refresh.png" runat="server" CausesValidation="false" />
