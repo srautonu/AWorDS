@@ -30,7 +30,7 @@ void runMaw(double diffMatrix[][NUM_GENE], int diffIndex)
     //
     for (i = 0; i < g_numGenes; i++)
     {
-        sprintf(strFileName, "%s\\%s.fasta.out", g_strDataDir, g_strSpeciesFullName[i]);
+        sprintf(strFileName, "%s\\%s.maw.txt", g_strDataDir, g_strSpeciesFullName[i]);
         maw[i] = Set::CreateFromFile(strFileName);
     }
 
