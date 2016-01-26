@@ -152,7 +152,6 @@ public partial class Default : System.Web.UI.Page
                 foreach (string s in SpeciesArray)
                 {
                     string[] temp = s.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-
                     seqFullNames.Add(temp[0]);
                     seqShortNames.Add(temp[1]);
                 }
@@ -160,8 +159,9 @@ public partial class Default : System.Web.UI.Page
 
             int absWordType = 1;
             int diffIndex = 1;
-            string wordType = this.DropDownListWordType.SelectedValue;
             string indexType = "";
+
+            string wordType = this.DropDownListWordType.SelectedValue;
             if (wordType == "1")
             {
                 absWordType = 1;
@@ -173,85 +173,87 @@ public partial class Default : System.Web.UI.Page
                 indexType = this.DropDownListIndexTypeRAW.SelectedValue;
             }
 
+            string outputType = this.DropDownListOutputType.SelectedValue;
+
             diffIndex = int.Parse(indexType);
-
-            // call C# methods of the mawObject here 
-
             double[,] diffMatrixLocal = new double[seqFullNames.Count, seqFullNames.Count];
-            if (!testing)
-            {
-                int ret = InteropMAW.Initialize(seqFullNames.ToArray(), seqShortNames.ToArray(), seqFullNames.Count, ExpPath);
-                InteropMAW.getDiffMatrix(diffMatrixLocal, absWordType, diffIndex);
-            }
-
-            #region format the output (Diff Matrix) as table
-            StringBuilder talbeSB = new StringBuilder();
-             
-            talbeSB.Append("<table class=\"table1\">");
-            talbeSB.Append("<thead>");
-            talbeSB.Append("<tr>");
-            talbeSB.Append("<th></th>");
-            for (int i = 0; i < seqFullNames.Count; i++)
-            {
-                talbeSB.Append(string.Format("<th scope = \"col\" abbr=\"Starter\">{0}</th>", seqShortNames[i]));
-            }
-            talbeSB.Append("</tr>");
-            talbeSB.Append("</thead>");
-            talbeSB.Append("<tbody>");
-            for (int i = 0; i < seqFullNames.Count; i++)
-            {
-                talbeSB.Append("<tr>");
-                talbeSB.Append(string.Format("<th scope=\"row\">{0}</th>", seqShortNames[i]));
-                for (int j = 0; j <= i; j++)
-                {
-                    talbeSB.Append("<td></td>");
-                }
-
-                for (int j = i + 1; j < seqFullNames.Count; j++)
-                {
-                    //talbeSB.Append(string.Format("<td>{0}, {1}</td>", i, j));
-                    talbeSB.Append(string.Format("<td>{0}</td>", Math.Round((double)diffMatrixLocal.GetValue(i, j), 2)));
-                }
-                talbeSB.Append("</tr>");
-            }
-            talbeSB.Append("</tbody>");
-            talbeSB.Append("</table>");
-            #endregion
-
             int[,] rank = new int[seqFullNames.Count, seqFullNames.Count];
+
+            StringBuilder talbeSB = new StringBuilder();
+            int ret = 0;
             if (!testing)
-            {
-                int ret = InteropMAW.Initialize(seqFullNames.ToArray(), seqShortNames.ToArray(), seqFullNames.Count, ExpPath);
-                InteropMAW.getRanks(rank, absWordType, diffIndex);
-            }
+                 ret = InteropMAW.Initialize(seqFullNames.ToArray(), seqShortNames.ToArray(), seqFullNames.Count, ExpPath);
 
-            #region format the output (Species Distance Matrix) as table
-
-            talbeSB.Append("<br \">");
-            talbeSB.Append("<table class=\"table1\">");
-            talbeSB.Append("<thead>");
-            talbeSB.Append("<tr>");
-            talbeSB.Append("<th></th>");
-            //for (int i = 0; i < SeqNames.Count; i++)
-            //{
-            //    talbeSB.Append(string.Format("<th scope = \"col\" abbr=\"Starter\">{0}</th>", SeqNames.Values.ElementAt(i)));
-            //}
-            talbeSB.Append("</tr>");
-            talbeSB.Append("</thead>");
-            talbeSB.Append("<tbody>");
-            for (int i = 0; i < seqFullNames.Count; i++)
+            if (outputType == "Distance_Matrix")
             {
+                if (!testing)
+                    InteropMAW.getDiffMatrix(diffMatrixLocal, absWordType, diffIndex);
+                
+                #region format the output (Diff Matrix) as table
+                
+                talbeSB.Append("<table class=\"table1\">");
+                talbeSB.Append("<thead>");
                 talbeSB.Append("<tr>");
-                talbeSB.Append(string.Format("<th scope=\"row\">{0}</th>", seqShortNames[i]));
-                for (int j = 1; j < seqFullNames.Count; j++)
+                talbeSB.Append("<th></th>");
+                for (int i = 0; i < seqFullNames.Count; i++)
                 {
-                    talbeSB.Append(string.Format("<td>{0}</td>", seqShortNames[(int)rank.GetValue(i, j)]));
+                    talbeSB.Append(string.Format("<th scope = \"col\" abbr=\"Starter\">{0}</th>", seqShortNames[i]));
                 }
                 talbeSB.Append("</tr>");
+                talbeSB.Append("</thead>");
+                talbeSB.Append("<tbody>");
+                for (int i = 0; i < seqFullNames.Count; i++)
+                {
+                    talbeSB.Append("<tr>");
+                    talbeSB.Append(string.Format("<th scope=\"row\">{0}</th>", seqShortNames[i]));
+                    for (int j = 0; j <= i; j++)
+                    {
+                        talbeSB.Append("<td></td>");
+                    }
+
+                    for (int j = i + 1; j < seqFullNames.Count; j++)
+                    {
+                        //talbeSB.Append(string.Format("<td>{0}, {1}</td>", i, j));
+                        talbeSB.Append(string.Format("<td>{0}</td>", Math.Round((double)diffMatrixLocal.GetValue(i, j), 2)));
+                    }
+                    talbeSB.Append("</tr>");
+                }
+                talbeSB.Append("</tbody>");
+                talbeSB.Append("</table>");
+                #endregion
             }
-            talbeSB.Append("</tbody>");
-            talbeSB.Append("</table>");
-            #endregion
+            else if (outputType ==  "Sorted_Difference_Tables")
+            {
+                if (!testing)
+                    InteropMAW.getRanks(rank, absWordType, diffIndex);
+                #region format the output (Species Distance Matrix) as table
+                talbeSB.Clear();
+                talbeSB.Append("<br \">");
+                talbeSB.Append("<table class=\"table1\">");
+                talbeSB.Append("<thead>");
+                talbeSB.Append("<tr>");
+                talbeSB.Append("<th></th>");
+                //for (int i = 0; i < SeqNames.Count; i++)
+                //{
+                //    talbeSB.Append(string.Format("<th scope = \"col\" abbr=\"Starter\">{0}</th>", SeqNames.Values.ElementAt(i)));
+                //}
+                talbeSB.Append("</tr>");
+                talbeSB.Append("</thead>");
+                talbeSB.Append("<tbody>");
+                for (int i = 0; i < seqFullNames.Count; i++)
+                {
+                    talbeSB.Append("<tr>");
+                    talbeSB.Append(string.Format("<th scope=\"row\">{0}</th>", seqShortNames[i]));
+                    for (int j = 1; j < seqFullNames.Count; j++)
+                    {
+                        talbeSB.Append(string.Format("<td>{0}</td>", seqShortNames[(int)rank.GetValue(i, j)]));
+                    }
+                    talbeSB.Append("</tr>");
+                }
+                talbeSB.Append("</tbody>");
+                talbeSB.Append("</table>");
+                #endregion
+            }
 
             LabelMAWRes.Text = talbeSB.ToString();
             LabelMAWRes.Visible = true;
