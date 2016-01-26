@@ -58,9 +58,12 @@ double GetRawBasedDiff(int i, int j, int diffIndex)
     return res;
 }
 
-void runRaw(double diffMatrix[][NUM_GENE], int diffIndex)
+int runRaw(double diffMatrix[][NUM_GENE], int diffIndex)
 {
     int i, j;
+
+    if (diffIndex < RAW_LWI || diffIndex > RAW_GCC)
+        return -1;
 
     for (i = 0; i < NUM_GENE; i++)
     {
@@ -69,4 +72,6 @@ void runRaw(double diffMatrix[][NUM_GENE], int diffIndex)
             diffMatrix[i][j] = GetRawBasedDiff(i, j, diffIndex);
         }
     }
+
+    return 0;
 }

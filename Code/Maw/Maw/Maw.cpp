@@ -15,12 +15,15 @@ double calculateTVD(
     vector<pair<int, double>> rgB
     );
 
-void runMaw(double diffMatrix[][NUM_GENE], int diffIndex)
+int runMaw(double diffMatrix[][NUM_GENE], int diffIndex)
 {
     int i, j;
     Set maw[NUM_GENE];
     Set diff, a, b;
     char strFileName[MAX_PATH];
+
+    if (diffIndex < MAW_LWI_SDIFF || diffIndex > MAW_TVD)
+        return -1;
 
     //
     // 1. Read Input
@@ -76,6 +79,8 @@ void runMaw(double diffMatrix[][NUM_GENE], int diffIndex)
             }
         }
     }
+
+    return 0;
 }
 
 //

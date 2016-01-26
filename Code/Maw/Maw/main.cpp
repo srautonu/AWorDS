@@ -21,11 +21,26 @@ extern "C" __declspec(dllexport) int getDiffMatrix(
     int diffIndex
     );
 
+extern "C" __declspec(dllexport) int getRanks(
+    int rank[][NUM_GENE],
+    int absWordType,
+    int diffIndex
+    );
 
-extern void runMaw(double diffMatrix[][NUM_GENE], int diffIndex);
-extern void runRaw(double diffMatrix[][NUM_GENE], int diffIndex);
+void PrintSpeciesRelations(int ranks[][NUM_GENE])
+{
+    int i, j;
 
-extern int AnalyzeSpeciesRelations();
+    for (i = 0; i < NUM_GENE; i++)
+    {
+        printf("%7s:", g_strSpeciesFullName[i]);
+
+        for (j = 0; j < NUM_GENE; j++)
+        {
+            printf("%7s%c", g_strSpeciesFullName[ranks[i][j]], (j == NUM_GENE-1 ? '\n' : ' '));
+        }
+    }
+}
 
 void PrintDiffMatrix(double diffMatrix[NUM_GENE][NUM_GENE])
 {
@@ -62,8 +77,8 @@ int main()
     // Change the following variable to change the data folder location
     //
     //char *strDataDir = ".";
-    //char *strDataDir = "C:\\gitHub\\MAW\\Data\\NoRC\\Input\\Raw";
-    char *strDataDir = "C:\\gitHub\\MAW\\Data\\NoRC\\Input\\Maw";
+    //char *strDataDir = "C:\\Users\\mrahman\\Desktop\\Masters Material\\Data\\Input\\Raw_NoRC";
+    char *strDataDir = "C:\\Users\\mrahman\\Desktop\\Masters Material\\Data\\Input\\Maw_NoRC";
 
     //
     // Change the following variables for running a different set of species/gene sequences
@@ -104,12 +119,15 @@ int main()
     };
 
     double diffMatrix[NUM_GENE][NUM_GENE] = {0};
+    int rank[NUM_GENE][NUM_GENE] = {0};
 
     Initialize(strSpeciesFullName, strSpeciesShortName, nGenes, strDataDir);
 
-    getDiffMatrix(diffMatrix, absWordType, diffIndex);
+    //getDiffMatrix(diffMatrix, absWordType, diffIndex);
+    //PrintDiffMatrix(diffMatrix);
 
-    PrintDiffMatrix(diffMatrix);
+    getRanks(rank, absWordType, diffIndex);
+    PrintSpeciesRelations(rank);
     
     return 0;
 }

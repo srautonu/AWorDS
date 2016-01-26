@@ -60,7 +60,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="DiffMatrixSorter.cpp" />
+    <ClCompile Include="Utilities.cpp" />
     <ClCompile Include="DllMain.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Maw.cpp" />

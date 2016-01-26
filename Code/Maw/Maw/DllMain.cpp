@@ -9,8 +9,9 @@
 
 #include "Constants.h"
 
-extern void runMaw(double diffMatrix[][NUM_GENE], int diffIndex);
-extern void runRaw(double diffMatrix[][NUM_GENE], int diffIndex);
+extern int runMaw(double diffMatrix[][NUM_GENE], int diffIndex);
+extern int runRaw(double diffMatrix[][NUM_GENE], int diffIndex);
+extern void getRanks(double diffMatrix[][NUM_GENE], int rank[][NUM_GENE]);
 
 extern "C" __declspec(dllexport) int Initialize(
     char **geneFullNames,
@@ -62,22 +63,39 @@ extern "C" __declspec(dllexport) int Initialize(
     return 0;
 }
 
-extern "C" __declspec(dllexport) int getDiffMatrix(double diffMatrix[][NUM_GENE], int absWordType, int diffIndex)
+extern "C" __declspec(dllexport) int getDiffMatrix(
+    double diffMatrix[][NUM_GENE],
+    int absWordType,
+    int diffIndex
+    )
 {
-    //
-    // Sanity check
-    //
+    int ret = 0;
 
+    if (absWordType != MAW && absWordType != RAW)
+        return -1;
 
     if (absWordType == RAW)
     {
-        runRaw(diffMatrix, diffIndex);
+        ret = runRaw(diffMatrix, diffIndex);
     }
     else if (absWordType == MAW)
     {
-        runMaw(diffMatrix, diffIndex);
+        ret = runMaw(diffMatrix, diffIndex);
     }
     
-
     return 0;
+}
+
+extern "C" __declspec(dllexport) int getRanks(int rank[][NUM_GENE], int absWordType, int diffIndex)
+{
+    double diffMatrix[NUM_GENE][NUM_GENE];
+    int ret = 0;
+
+    ret = getDiffMatrix(diffMatrix, absWordType, diffIndex);
+    if (ret == 0)
+    {
+        getRanks(diffMatrix, rank);
+    }
+
+    return ret;
 }
