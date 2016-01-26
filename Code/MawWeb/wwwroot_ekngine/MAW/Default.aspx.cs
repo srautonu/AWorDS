@@ -89,9 +89,10 @@ public partial class Default : System.Web.UI.Page
                 //this.SequenceNames.Add();
                 this.FileUpload1.SaveAs(Path.Combine(this.ExpPath, fileName));
 
-                ZipArchive archive = ZipFile.OpenRead(Path.Combine(this.ExpPath, fileName));
-                ZipFileExtensions.ExtractToDirectory(archive, ExpPath);
-
+                using (ZipArchive archive = ZipFile.OpenRead(Path.Combine(this.ExpPath, fileName)))
+                {
+                    ZipFileExtensions.ExtractToDirectory(archive, ExpPath);
+                }
                 this.msg2.Visible = true;
                 this.msg2.Text = "Files uploaded successfully.";
             }
@@ -136,17 +137,17 @@ public partial class Default : System.Web.UI.Page
             #region testing only
             if (testing)
             {
-                SeqNames.Add("human", "");
-                SeqNames.Add("goat", "");
-                SeqNames.Add("opossum", "");
-                SeqNames.Add("gallus", "");
-                SeqNames.Add("lemur", "");
-                SeqNames.Add("mouse", "");
-                SeqNames.Add("rabbit", "");
-                SeqNames.Add("rat", "");
-                SeqNames.Add("gorilla", "");
-                SeqNames.Add("bovine", "");
-                SeqNames.Add("chimp", "");
+                SeqNames.Add("human", "humn");
+                SeqNames.Add("goat", "goat");
+                SeqNames.Add("opossum", "opsm");
+                SeqNames.Add("gallus", "glus");
+                SeqNames.Add("lemur", "lmur");
+                SeqNames.Add("mouse", "mous");
+                SeqNames.Add("rabbit", "rbit");
+                SeqNames.Add("rat", "rat");
+                SeqNames.Add("gorilla", "grla");
+                SeqNames.Add("bovine", "bovn");
+                SeqNames.Add("chimp", "chmp");
             }
             #endregion
 
@@ -189,6 +190,7 @@ public partial class Default : System.Web.UI.Page
             // call C# methods of the mawObject here 
 
             double[,] diffMatrixLocal = new double[SeqNames.Count, SeqNames.Count];
+            int [,] SpeciesDistanceMatrix = new int[SeqNames.Count, SeqNames.Count];
             if (!testing)
             {
                 int ret = InteropMAW.Initialize(SeqNames.Keys.ToArray(), SeqNames.Values.ToArray(), SeqNames.Count, ExpPath);
@@ -200,7 +202,7 @@ public partial class Default : System.Web.UI.Page
             // you have the actual matrix
             //
 
-            #region format the output as table
+            #region format the output (Diff Matrix) as table
             StringBuilder talbeSB = new StringBuilder();
              
             talbeSB.Append("<table class=\"table1\">");
@@ -209,7 +211,7 @@ public partial class Default : System.Web.UI.Page
             talbeSB.Append("<th></th>");
             for (int i = 0; i < SeqNames.Count; i++)
             {
-                talbeSB.Append(string.Format("<th scope = \"col\" abbr=\"Starter\">{0}</th>", SeqNames.Keys.ElementAt(i)));
+                talbeSB.Append(string.Format("<th scope = \"col\" abbr=\"Starter\">{0}</th>", SeqNames.Values.ElementAt(i)));
             }
             talbeSB.Append("</tr>");
             talbeSB.Append("</thead>");
@@ -217,11 +219,40 @@ public partial class Default : System.Web.UI.Page
             for (int i = 0; i < SeqNames.Count; i++)
             {
                 talbeSB.Append("<tr>");
-                talbeSB.Append(string.Format("<th scope=\"row\">{0}</th>", SeqNames.Keys.ElementAt(i)));
+                talbeSB.Append(string.Format("<th scope=\"row\">{0}</th>", SeqNames.Values.ElementAt(i)));
                 for (int j = 0; j <= i; j++)
                 {
                     //talbeSB.Append(string.Format("<td>{0}, {1}</td>", i, j));
                     talbeSB.Append(string.Format("<td>{0}</td>", Math.Round((double)diffMatrixLocal.GetValue(i, j), 2)));
+                }
+                talbeSB.Append("</tr>");
+            }
+            talbeSB.Append("</tbody>");
+            talbeSB.Append("</table>");
+            #endregion
+
+            #region format the output (Species Distance Matrix) as table
+
+            talbeSB.Append("<br \">");
+            talbeSB.Append("<table class=\"table1\">");
+            talbeSB.Append("<thead>");
+            talbeSB.Append("<tr>");
+            talbeSB.Append("<th></th>");
+            //for (int i = 0; i < SeqNames.Count; i++)
+            //{
+            //    talbeSB.Append(string.Format("<th scope = \"col\" abbr=\"Starter\">{0}</th>", SeqNames.Values.ElementAt(i)));
+            //}
+            talbeSB.Append("</tr>");
+            talbeSB.Append("</thead>");
+            talbeSB.Append("<tbody>");
+            for (int i = 0; i < SeqNames.Count; i++)
+            {
+                talbeSB.Append("<tr>");
+                talbeSB.Append(string.Format("<th scope=\"row\">{0}</th>", SeqNames.Values.ElementAt(i)));
+                for (int j = 0; j < SeqNames.Count; j++)
+                {
+                    talbeSB.Append(string.Format("<td>{0}, {1}</td>", i, j));
+                    //talbeSB.Append(string.Format("<td>{0}</td>",  (int)SpeciesDistanceMatrix.GetValue(i, j), 2));
                 }
                 talbeSB.Append("</tr>");
             }
