@@ -68,6 +68,9 @@ public partial class Default : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        ExpName = "Maw";
+        ExpPath = @"C:\gitHub\MAW\Code\MawWeb\wwwroot_ekngine\MAW\data\" + ExpName;
+
         this.msg1.Visible = !String.IsNullOrEmpty(this.ExpName);
         this.msg1.Text = "Experiment name:" + this.ExpName;
 
@@ -131,8 +134,9 @@ public partial class Default : System.Web.UI.Page
     {
         try
         {
-            string path = Server.MapPath("~/maw/dll/");
             Dictionary<string, string> SeqNames = new Dictionary<string, string>();
+            List<string> seqFullNames = new List<string>();
+            List<string> seqShortNames = new List<string>();
 
             #region testing only
             if (testing)
@@ -167,6 +171,9 @@ public partial class Default : System.Web.UI.Page
                 {
                     string[] temp = s.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                     SeqNames.Add(temp[0], temp[1]);
+
+                    seqFullNames.Add(temp[0]);
+                    seqShortNames.Add(temp[1]);
                 }
             }
 
@@ -276,9 +283,33 @@ public partial class Default : System.Web.UI.Page
             //        strDisplay += ",";
             //    strDisplay += "<br />";
             //}
+       
+            //#region relative species ranking
+            //int[,] rank = new int[SeqNames.Count, SeqNames.Count];
+            //if (!testing)
+            //{
+            //    int ret = InteropMAW.Initialize(SeqNames.Keys.ToArray(), SeqNames.Values.ToArray(), SeqNames.Count, ExpPath);
+            //    InteropMAW.getRanks(rank, absWordType, diffIndex);
+            //}
+
+            //string strDisplay = "";
+            //for (int i = 0; i < seqShortNames.Count(); i++)
+            //{
+            //    strDisplay += seqShortNames[i] + ":";
+            //    for (int j = 1; j < seqShortNames.Count(); j++)
+            //    {
+            //        strDisplay += " " + seqShortNames[(int)rank.GetValue(i, j)];
+            //    }
+
+            //    strDisplay += "<br />";
+            //}
             #endregion
 
             LabelMAWRes.Text = talbeSB.ToString();
+
+            LabelMAWRes.Text += "< br />";
+            LabelMAWRes.Text += strDisplay;
+
             LabelMAWRes.Visible = true;
         }
         catch (System.Exception ex)
