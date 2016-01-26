@@ -303,6 +303,26 @@ public partial class Default : System.Web.UI.Page
 
             //    strDisplay += "<br />";
             //}
+       
+            //#region relative species ranking
+            //int[,] rank = new int[SeqNames.Count, SeqNames.Count];
+            //if (!testing)
+            //{
+            //    int ret = InteropMAW.Initialize(SeqNames.Keys.ToArray(), SeqNames.Values.ToArray(), SeqNames.Count, ExpPath);
+            //    InteropMAW.getRanks(rank, absWordType, diffIndex);
+            //}
+
+            //string strDisplay = "";
+            //for (int i = 0; i < seqShortNames.Count(); i++)
+            //{
+            //    strDisplay += seqShortNames[i] + ":";
+            //    for (int j = 1; j < seqShortNames.Count(); j++)
+            //    {
+            //        strDisplay += " " + seqShortNames[(int)rank.GetValue(i, j)];
+            //    }
+
+            //    strDisplay += "<br />";
+            //}
             #endregion
 
             LabelMAWRes.Text = talbeSB.ToString();
