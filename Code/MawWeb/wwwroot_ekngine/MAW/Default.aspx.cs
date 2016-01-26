@@ -134,26 +134,8 @@ public partial class Default : System.Web.UI.Page
     {
         try
         {
-            Dictionary<string, string> SeqNames = new Dictionary<string, string>();
             List<string> seqFullNames = new List<string>();
             List<string> seqShortNames = new List<string>();
-
-            #region testing only
-            if (testing)
-            {
-                SeqNames.Add("human", "humn");
-                SeqNames.Add("goat", "goat");
-                SeqNames.Add("opossum", "opsm");
-                SeqNames.Add("gallus", "glus");
-                SeqNames.Add("lemur", "lmur");
-                SeqNames.Add("mouse", "mous");
-                SeqNames.Add("rabbit", "rbit");
-                SeqNames.Add("rat", "rat");
-                SeqNames.Add("gorilla", "grla");
-                SeqNames.Add("bovine", "bovn");
-                SeqNames.Add("chimp", "chmp");
-            }
-            #endregion
 
             if (this.ExpPath == "")
                 this.ExpPath = @"E:\Ekngine\ekngine.com\wwwroot_ekngine\MAW\data\www";
@@ -170,7 +152,6 @@ public partial class Default : System.Web.UI.Page
                 foreach (string s in SpeciesArray)
                 {
                     string[] temp = s.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                    SeqNames.Add(temp[0], temp[1]);
 
                     seqFullNames.Add(temp[0]);
                     seqShortNames.Add(temp[1]);
@@ -196,18 +177,12 @@ public partial class Default : System.Web.UI.Page
 
             // call C# methods of the mawObject here 
 
-            double[,] diffMatrixLocal = new double[SeqNames.Count, SeqNames.Count];
-            int [,] SpeciesDistanceMatrix = new int[SeqNames.Count, SeqNames.Count];
+            double[,] diffMatrixLocal = new double[seqFullNames.Count, seqFullNames.Count];
             if (!testing)
             {
-                int ret = InteropMAW.Initialize(SeqNames.Keys.ToArray(), SeqNames.Values.ToArray(), SeqNames.Count, ExpPath);
+                int ret = InteropMAW.Initialize(seqFullNames.ToArray(), seqShortNames.ToArray(), seqFullNames.Count, ExpPath);
                 InteropMAW.getDiffMatrix(diffMatrixLocal, absWordType, diffIndex);
             }
-            //
-            // display the result in the existing (less appealing) format
-            // TODO: Ali, perhaps the data could be represented in tabular fashion, now that
-            // you have the actual matrix
-            //
 
             #region format the output (Diff Matrix) as table
             StringBuilder talbeSB = new StringBuilder();
@@ -216,18 +191,23 @@ public partial class Default : System.Web.UI.Page
             talbeSB.Append("<thead>");
             talbeSB.Append("<tr>");
             talbeSB.Append("<th></th>");
-            for (int i = 0; i < SeqNames.Count; i++)
+            for (int i = 0; i < seqFullNames.Count; i++)
             {
-                talbeSB.Append(string.Format("<th scope = \"col\" abbr=\"Starter\">{0}</th>", SeqNames.Values.ElementAt(i)));
+                talbeSB.Append(string.Format("<th scope = \"col\" abbr=\"Starter\">{0}</th>", seqShortNames[i]));
             }
             talbeSB.Append("</tr>");
             talbeSB.Append("</thead>");
             talbeSB.Append("<tbody>");
-            for (int i = 0; i < SeqNames.Count; i++)
+            for (int i = 0; i < seqFullNames.Count; i++)
             {
                 talbeSB.Append("<tr>");
-                talbeSB.Append(string.Format("<th scope=\"row\">{0}</th>", SeqNames.Values.ElementAt(i)));
+                talbeSB.Append(string.Format("<th scope=\"row\">{0}</th>", seqShortNames[i]));
                 for (int j = 0; j <= i; j++)
+                {
+                    talbeSB.Append("<td></td>");
+                }
+
+                for (int j = i + 1; j < seqFullNames.Count; j++)
                 {
                     //talbeSB.Append(string.Format("<td>{0}, {1}</td>", i, j));
                     talbeSB.Append(string.Format("<td>{0}</td>", Math.Round((double)diffMatrixLocal.GetValue(i, j), 2)));
@@ -237,6 +217,13 @@ public partial class Default : System.Web.UI.Page
             talbeSB.Append("</tbody>");
             talbeSB.Append("</table>");
             #endregion
+
+            int[,] rank = new int[seqFullNames.Count, seqFullNames.Count];
+            if (!testing)
+            {
+                int ret = InteropMAW.Initialize(seqFullNames.ToArray(), seqShortNames.ToArray(), seqFullNames.Count, ExpPath);
+                InteropMAW.getRanks(rank, absWordType, diffIndex);
+            }
 
             #region format the output (Species Distance Matrix) as table
 
@@ -252,14 +239,13 @@ public partial class Default : System.Web.UI.Page
             talbeSB.Append("</tr>");
             talbeSB.Append("</thead>");
             talbeSB.Append("<tbody>");
-            for (int i = 0; i < SeqNames.Count; i++)
+            for (int i = 0; i < seqFullNames.Count; i++)
             {
                 talbeSB.Append("<tr>");
-                talbeSB.Append(string.Format("<th scope=\"row\">{0}</th>", SeqNames.Values.ElementAt(i)));
-                for (int j = 0; j < SeqNames.Count; j++)
+                talbeSB.Append(string.Format("<th scope=\"row\">{0}</th>", seqShortNames[i]));
+                for (int j = 1; j < seqFullNames.Count; j++)
                 {
-                    talbeSB.Append(string.Format("<td>{0}, {1}</td>", i, j));
-                    //talbeSB.Append(string.Format("<td>{0}</td>",  (int)SpeciesDistanceMatrix.GetValue(i, j), 2));
+                    talbeSB.Append(string.Format("<td>{0}</td>", seqShortNames[(int)rank.GetValue(i, j)]));
                 }
                 talbeSB.Append("</tr>");
             }
@@ -267,90 +253,7 @@ public partial class Default : System.Web.UI.Page
             talbeSB.Append("</table>");
             #endregion
 
-            #region old format
-            //string strDisplay = "";
-            //for (int i = 0; i < SeqNames.Count; i++)
-            //{
-            //    strDisplay += "{ ";
-            //    for (int j = 0; j < i; j++)
-            //    {
-            //        strDisplay += diffMatrixLocal.GetValue(i, j);
-            //        strDisplay += (j == i - 1) ? "" : ", ";
-            //    }
-
-            //    strDisplay += " }";
-            //    if (i != SeqNames.Count - 1)
-            //        strDisplay += ",";
-            //    strDisplay += "<br />";
-            //}
-       
-            //#region relative species ranking
-            //int[,] rank = new int[SeqNames.Count, SeqNames.Count];
-            //if (!testing)
-            //{
-            //    int ret = InteropMAW.Initialize(SeqNames.Keys.ToArray(), SeqNames.Values.ToArray(), SeqNames.Count, ExpPath);
-            //    InteropMAW.getRanks(rank, absWordType, diffIndex);
-            //}
-
-            //string strDisplay = "";
-            //for (int i = 0; i < seqShortNames.Count(); i++)
-            //{
-            //    strDisplay += seqShortNames[i] + ":";
-            //    for (int j = 1; j < seqShortNames.Count(); j++)
-            //    {
-            //        strDisplay += " " + seqShortNames[(int)rank.GetValue(i, j)];
-            //    }
-
-            //    strDisplay += "<br />";
-            //}
-       
-            //#region relative species ranking
-            //int[,] rank = new int[SeqNames.Count, SeqNames.Count];
-            //if (!testing)
-            //{
-            //    int ret = InteropMAW.Initialize(SeqNames.Keys.ToArray(), SeqNames.Values.ToArray(), SeqNames.Count, ExpPath);
-            //    InteropMAW.getRanks(rank, absWordType, diffIndex);
-            //}
-
-            //string strDisplay = "";
-            //for (int i = 0; i < seqShortNames.Count(); i++)
-            //{
-            //    strDisplay += seqShortNames[i] + ":";
-            //    for (int j = 1; j < seqShortNames.Count(); j++)
-            //    {
-            //        strDisplay += " " + seqShortNames[(int)rank.GetValue(i, j)];
-            //    }
-
-            //    strDisplay += "<br />";
-            //}
-
-            //#region relative species ranking
-            //int[,] rank = new int[SeqNames.Count, SeqNames.Count];
-            //if (!testing)
-            //{
-            //    int ret = InteropMAW.Initialize(SeqNames.Keys.ToArray(), SeqNames.Values.ToArray(), SeqNames.Count, ExpPath);
-            //    InteropMAW.getRanks(rank, absWordType, diffIndex);
-            //}
-
-            //string strDisplay = "";
-            //for (int i = 0; i < seqShortNames.Count(); i++)
-            //{
-            //    strDisplay += seqShortNames[i] + ":";
-            //    for (int j = 1; j < seqShortNames.Count(); j++)
-            //    {
-            //        strDisplay += " " + seqShortNames[(int)rank.GetValue(i, j)];
-            //    }
-
-            //    strDisplay += "<br />";
-            //}
-
-            #endregion
-
             LabelMAWRes.Text = talbeSB.ToString();
-
-            //LabelMAWRes.Text += "< br />";
-            //LabelMAWRes.Text += strDisplay;
-
             LabelMAWRes.Visible = true;
         }
         catch (System.Exception ex)
