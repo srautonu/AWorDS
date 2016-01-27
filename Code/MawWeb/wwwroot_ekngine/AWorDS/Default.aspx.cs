@@ -78,7 +78,7 @@ public partial class Default : System.Web.UI.Page
         if (bypassExpCreation)
         {
             ExpName = "Maw_RC";
-            ExpPath = @"C:\gitHub\MAW\Code\MawWeb\wwwroot_ekngine\MAW\data\" + ExpName;
+            ExpPath = @"C:\gitHub\MAW\Code\MawWeb\wwwroot_ekngine\AWorDS\data\" + ExpName;
         }
 
         this.msg1.Visible = !String.IsNullOrEmpty(this.ExpName);
@@ -148,7 +148,7 @@ public partial class Default : System.Web.UI.Page
             List<string> seqShortNames = new List<string>();
 
             if (this.ExpPath == "")
-                this.ExpPath = @"E:\Ekngine\ekngine.com\wwwroot_ekngine\MAW\data\www";
+                this.ExpPath = @"E:\Ekngine\ekngine.com\wwwroot_ekngine\AWorDS\data\www";
             string SpeciesOrderPath = Path.Combine(ExpPath, "SpeciesOrder.txt");
             if (!File.Exists(SpeciesOrderPath) && !testing)
             {
@@ -282,7 +282,7 @@ public partial class Default : System.Web.UI.Page
     protected void ButtonCreateExp_Click(object sender, EventArgs e)
     {
         string expName = this.TextBoxExpName.Text.Trim();
-        string path = Server.MapPath("~/maw/data") + "\\" + expName;
+        string path = Server.MapPath("~/awords/data") + "\\" + expName;
 
         msg1.Visible = true;
         if (Directory.Exists(path))
