@@ -68,9 +68,10 @@ int runRaw(double diffMatrix[][NUM_GENE], int diffIndex)
 
     for (i = 0; i < g_numGenes; i++)
     {
+        diffMatrix[i][i] = 0;
         for (j = 0; j < i; j++)
         {
-            diffMatrix[i][j] = GetRawBasedDiff(i, j, diffIndex);
+            diffMatrix[i][j] = diffMatrix[j][i] = GetRawBasedDiff(i, j, diffIndex);
         }
     }
 
