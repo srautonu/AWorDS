@@ -78,7 +78,7 @@ public partial class Default : System.Web.UI.Page
         if (bypassExpCreation)
         {
             ExpName = "Maw_RC";
-            ExpPath = @"C:\gitHub\MAW\Code\MawWeb\wwwroot_ekngine\AWorDS\data\" + ExpName;
+            ExpPath = @"C:\gitHub\AWorDS\Code\MawWeb\wwwroot_ekngine\AWorDS\data\" + ExpName;
         }
 
         this.msg1.Visible = !String.IsNullOrEmpty(this.ExpName);
@@ -268,7 +268,18 @@ public partial class Default : System.Web.UI.Page
                 #endregion
             }
 
-            LabelMAWRes.Text = talbeSB.ToString();
+            LabelMAWRes.Text = "Dissimilarity Index Used: ";
+            if (wordType == "1")
+            {
+                LabelMAWRes.Text += DropDownListIndexTypeMAW.SelectedItem.Text;
+            }
+            else if (wordType == "2")
+            {
+                LabelMAWRes.Text += DropDownListIndexTypeRAW.SelectedItem.Text;
+            }
+            LabelMAWRes.Text += "<br />";
+
+            LabelMAWRes.Text += talbeSB.ToString();
             LabelMAWRes.Visible = true;
         }
         catch (System.Exception ex)

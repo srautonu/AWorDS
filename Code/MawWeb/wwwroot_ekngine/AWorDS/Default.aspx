@@ -128,12 +128,12 @@
                     <h2>AWorDS</h2>
                     <br />
                     <p>
-                        The tool is called <b>A</b>bsent <b>Wor</b>d Based (<b>D</b>is)similarity analysis of <b>S</b>equences;
-                        <b>AWorDS</b> in short. (Pronounced like "Awards"). It takes the set of Minimal Absent Words (MAW) or
-                        Relative Absent Words (RAW) of several sequences and produces the difference matrix based on a number
+                        Welcome to the <b>A</b>bsent <b>Wor</b>d Based (<b>D</b>is)similarity analysis of <b>S</b>equences;
+                        <b>AWorDS</b> in short. (Pronounced like "Awards"). This tool takes the set of Minimal Absent Words (MAW) or
+                        Relative Absent Words (RAW) of several sequences and produces the distance matrix based on a number of
                         indices. 
                         <br />
-                        The distance matrix can be used to demonstrate relative closeness of the sequences. It can be used
+                        The distance matrix can be used to demonstrate relative closeness of the sequences. It can also be used
                         to produce phylogenetic trees using a number of known algorithms.
                     </p>
                     <!-- <hr />
@@ -143,7 +143,7 @@
                     <hr />
                     <h2>Try it Out!</h2>
                     <p  style="font-size:15px; font-weight:bold; color:red;">Step 1: Create new experiment</p>
-                    <asp:Label ID="Label3" runat="server" >Type the experiment name and click create button</asp:Label>
+                    <asp:Label ID="Label3" runat="server" >Give your experiment a name and click the create button</asp:Label>
                     <br /><br />
                      
                     
@@ -161,14 +161,13 @@
                     <p  style="font-size:15px; font-weight:bold; color:red;">Step 2: Upload data</p>
                     <div id="DivownMotif" runat="server">
                         <p style="font-size:13px; font-weight:bold; margin:2px;">Important:</p>
-                        <p style="font-size:12px; margin:1px;">1. The data files must by of type ".zip", the zip archive must contains list of sequence files of type "fasta.out"</p>
-                        <p style="font-size:12px; margin:1px;">2. The maximam number of sequence is n=20.</p>
-                        <p style="font-size:12px; margin:1px;">&nbsp;&nbsp;- For MAW, the number of files must be n.</p>
-                        <p style="font-size:12px; margin:1px;">&nbsp;&nbsp;- For RAW, the number of files must be n*(n-1)/2.</p>
-                        <p style="font-size:12px; margin:1px;">3. The size of each sequence file  must be less than 10MB (demo).</p>
-                        <p style="font-size:12px; margin:1px;">4. The sequence files will be deleted at the end of the session.</p>
+                        <p style="font-size:12px; margin:1px;">1. Upload a single .zip file containing all your data files.</p>
+                        <p style="font-size:12px; margin:1px;">2. See the ReadMe.txt file at <a href='http://github.com/srautonu/AWorDS/tree/master/Data/Input'>http://github.com/srautonu/AWorDS/tree/master/Data/Input</a> for exact composition that your .zip file should have.</p>
+                        <p style="font-size:12px; margin:1px;">3. Sample .zip files are available in the above location as well. These were used during our experimenal studies.</p>
+                        <p style="font-size:12px; margin:1px;">4. The size of each absent word (MAW or RAW) file  must be less than 10MB.</p>
+                        <p style="font-size:12px; margin:1px;">5. Your uploaded file will be deleted at the end of the session.</p>
                         <br />
-                        <p style="font-size:13px; font-weight:bold; margin:2px;">Select the zip archive then click upload</p>
+                        <p style="font-size:13px; font-weight:bold; margin:2px;">Select your zip archive then click upload</p>
                         <asp:FileUpload ID="FileUpload1" runat="server" class="fileUpload"/>
                          
                         <br /> 
@@ -232,7 +231,7 @@
                         <asp:ListItem Text="RAW - Relative absent word" Value="2"/> 
                     </asp:DropDownList> 
                      <br /><br />
-                     <asp:Label ID="Label1" runat="server">Select MAW based dissimilarity index</asp:Label>
+                     <asp:Label ID="Label1" runat="server">Select MAW based dissimilarity index.</asp:Label>
                      <br /><br />
                     <asp:DropDownList ID="DropDownListIndexTypeMAW" style="font-size:16px; height:20px;" runat="server">
                            <asp:ListItem Text="MAW_LWI_SDIFF - Length weighted index of symmetric difference of MAW sets" Value="1"/>
