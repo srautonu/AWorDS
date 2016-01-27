@@ -9,6 +9,7 @@
 #include <string>
 #include <cassert>
 #include "Constants.h"
+#include "Globals.h"
 #include "Set.h"
 
 using namespace std;
@@ -65,7 +66,7 @@ int runRaw(double diffMatrix[][NUM_GENE], int diffIndex)
     if (diffIndex < RAW_LWI || diffIndex > RAW_GCC)
         return -1;
 
-    for (i = 0; i < NUM_GENE; i++)
+    for (i = 0; i < g_numGenes; i++)
     {
         for (j = 0; j < i; j++)
         {

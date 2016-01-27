@@ -7,6 +7,7 @@
 #include <assert.h>
 #include "Set.h"
 #include "Constants.h"
+#include "Globals.h"
 
 void MergeMawRC()
 {
@@ -14,12 +15,12 @@ void MergeMawRC()
     Set original, rc, merged;
     char strFileName[50];
     
-    for (i = 0; i < NUM_GENE; i++)
+    for (i = 0; i < g_numGenes; i++)
     {
-        sprintf(strFileName, "NoRC\\%s.fasta.out", g_strSpeciesFullName[i]);
+        sprintf(strFileName, "NoRC\\%s.maw.txt", g_strSpeciesFullName[i]);
         original = Set::CreateFromFile(strFileName);
 
-        sprintf(strFileName, "WithRC\\%s.fasta.out", g_strSpeciesFullName[i]);
+        sprintf(strFileName, "WithRC\\%s.maw.txt", g_strSpeciesFullName[i]);
         rc = Set::CreateFromFile(strFileName);
 
         merged = original.Union(rc);
@@ -27,7 +28,7 @@ void MergeMawRC()
         //
         // Write the merged set out to file
         //
-        sprintf(strFileName, "%s.fasta.out", g_strSpeciesFullName[i]);
+        sprintf(strFileName, "%s.raw.txt", g_strSpeciesFullName[i]);
         freopen(strFileName, "w", stdout); 
         printf(">1\n");
         merged.Print();
@@ -54,7 +55,7 @@ void GetRawFilePath(int i, int j, char *strBaseDir, char strPathOut[])
 
     sprintf(
         strFile,
-        "%s\\%s_%s.fasta",
+        "%s\\%s_%s.raw.txt",
         g_strSpeciesFullName[i], 
         g_strSpeciesShortName[i], 
         g_strSpeciesFullName[j]
@@ -73,9 +74,9 @@ void EditRaw()
     char strSourcePath[50], strDestPath[50];
     char buf[MAX_WORD_LEN];
     
-    for (i = 0; i < NUM_GENE; i++)
+    for (i = 0; i < g_numGenes; i++)
     {
-        for (j = 0; j < NUM_GENE; j++)
+        for (j = 0; j < g_numGenes; j++)
         {
             if (i == j)
             {
@@ -109,9 +110,9 @@ void MergeRawRC()
     Set original, rc, merged;
     char strFullPath[50];
     
-    for (i = 0; i < NUM_GENE; i++)
+    for (i = 0; i < g_numGenes; i++)
     {
-        for (j = 0; j < NUM_GENE; j++)
+        for (j = 0; j < g_numGenes; j++)
         {
             if (i == j)
             {

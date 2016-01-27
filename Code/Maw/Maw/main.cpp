@@ -7,6 +7,7 @@
 #include "Set.h"
 #include "Tests.h"
 #include "Constants.h"
+#include "Globals.h"
 
 extern "C" __declspec(dllexport) int Initialize(
     char **geneFullNames,
@@ -31,22 +32,22 @@ void PrintSpeciesRelations(int ranks[][NUM_GENE])
 {
     int i, j;
 
-    for (i = 0; i < NUM_GENE; i++)
+    for (i = 0; i < g_numGenes; i++)
     {
         printf("%7s:", g_strSpeciesFullName[i]);
 
-        for (j = 0; j < NUM_GENE; j++)
+        for (j = 0; j < g_numGenes; j++)
         {
-            printf("%7s%c", g_strSpeciesFullName[ranks[i][j]], (j == NUM_GENE-1 ? '\n' : ' '));
+            printf("%7s%c", g_strSpeciesFullName[ranks[i][j]], (j == g_numGenes-1 ? '\n' : ' '));
         }
     }
 }
 
-void PrintDiffMatrix(double diffMatrix[NUM_GENE][NUM_GENE])
+void PrintDiffMatrix(double diffMatrix[][NUM_GENE])
 {
     int i, j;
 
-    for (i = 0; i < NUM_GENE; i++)
+    for (i = 0; i < g_numGenes; i++)
     {
         printf("{ ");
 
@@ -56,7 +57,7 @@ void PrintDiffMatrix(double diffMatrix[NUM_GENE][NUM_GENE])
             printf("%s", (j == i - 1) ? "" : ", ");
         }
 
-        printf(" }%s\n", (i == NUM_GENE - 1) ? "" : ",");
+        printf(" }%s\n", (i == g_numGenes - 1) ? "" : ",");
     }
 
 }
@@ -71,50 +72,51 @@ int main()
     //int diffIndex = RAW_LWI;
 
     int absWordType = MAW;
-    int diffIndex = MAW_LWI_SDIFF;
+    int diffIndex = MAW_JD;
 
     //
     // Change the following variable to change the data folder location
     //
     //char *strDataDir = ".";
     //char *strDataDir = "C:\\Users\\mrahman\\Desktop\\Masters Material\\Data\\Input\\Raw_NoRC";
-    char *strDataDir = "C:\\Users\\mrahman\\Desktop\\Masters Material\\Data\\Input\\Maw_NoRC";
+    char *strDataDir = "C:\\Users\\mrahman\\Desktop\\Masters Material\\Data\\Input\\Maw_RC";
 
     //
     // Change the following variables for running a different set of species/gene sequences
     //
     
-    int nGenes = 11;
+    //int nGenes = 11;
+    int nGenes = 7;
 
     //
     // Short name code used for each species. 
-    char* strSpeciesShortName[NUM_GENE] = {
+    char* strSpeciesShortName[] = {
         "hu",
         "gt",
         "op",
         "ga",
         "le",
         "mo",
-        "rb",
-        "rt",
-        "gr",
-        "bv",
+        //"rb",
+        //"rt",
+        //"gr",
+        //"bv",
         "ch"
     };
 
     //
     // Full name of each species. 
-    char* strSpeciesFullName[NUM_GENE] = {
+    char* strSpeciesFullName[] = {
         "human",
         "goat",
         "opossum",
         "gallus",
         "lemur",
         "mouse",
-        "rabbit",
+        /*"rabbit",
         "rat",
         "gorilla",
-        "bovine",
+        "bovine",*/
         "chimp"
     };
 

@@ -9,6 +9,7 @@
 #include <cassert>
 #include "Set.h"
 #include "Constants.h"
+#include "Globals.h"
 
 double calculateTVD(
     vector<pair<int, double>> rgA,

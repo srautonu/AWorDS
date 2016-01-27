@@ -13,7 +13,7 @@
 //
 // Maximum number of genes that can be used in experiment
 //
-#define NUM_GENE 11
+#define NUM_GENE 20
 
 //
 // Maximum length of a species name Number of genes used in experiment
@@ -52,28 +52,3 @@
 //
 #define RAW_LWI            1   // Length weighted index
 #define RAW_GCC            2   // GC content
-
-//
-// Global variables
-//
-
-//
-// Total number of genes/species
-//
-extern __declspec(selectany) int g_numGenes;
-
-//
-// Short name code used for each species. 
-// (Used in generating the filename for Raw/Maw sets for respective species)
-//
-extern __declspec(selectany) char g_strSpeciesShortName[NUM_GENE][MAX_SPECIES_NAME_LEN];
-
-//
-// Full name of each species. 
-//
-extern __declspec(selectany) char g_strSpeciesFullName[NUM_GENE][MAX_SPECIES_NAME_LEN];
-
-//
-// Location of the folder that contains necessary data files
-//
-extern __declspec(selectany) char g_strDataDir[MAX_PATH];

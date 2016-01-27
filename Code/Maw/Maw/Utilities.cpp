@@ -14,6 +14,7 @@
 #include <algorithm>
 #include <numeric>
 #include "Constants.h"
+#include "Globals.h"
 
 using namespace std;
 
@@ -38,40 +39,40 @@ void getRanks(double diffMatrix[][NUM_GENE], int rank[][NUM_GENE])
 {
     int i;
 
-    for (i = 0; i < NUM_GENE; i++)
+    for (i = 0; i < g_numGenes; i++)
     {
-        iota(rank[i], rank[i] + NUM_GENE, 0);
-        sort(rank[i], rank[i] + NUM_GENE, IndexComparer(diffMatrix[i]));
+        iota(rank[i], rank[i] + g_numGenes, 0);
+        sort(rank[i], rank[i] + g_numGenes, IndexComparer(diffMatrix[i]));
     }
 }
 
-void PrintDiffMatrix_LatexFormat(double diffMatrix[NUM_GENE][NUM_GENE])
-{
-    int i, j;
-
-    printf("\\hline\n");
-    printf("Species");
-    for (i = 0; i < NUM_GENE; i++)
-    {
-        printf(" & %7s", g_strSpeciesFullName[i]);
-    }
-    printf("\\\\ \\hline\n");
-    
-    for (i = 0; i < NUM_GENE; i++)
-    {
-        printf("%7s", g_strSpeciesFullName[i]);
-        for (j = 0; j <= i; j++)
-        {
-            printf(" &        ");
-        }
-
-        for (; j < NUM_GENE; j++)
-        {
-            printf(" & %7.2lf", diffMatrix[i][j]);
-        }
-        printf("\\\\\n");
-    }
-
-    printf("\\hline\n");
-}
+//void PrintDiffMatrix_LatexFormat(double diffMatrix[NUM_GENE][NUM_GENE])
+//{
+//    int i, j;
+//
+//    printf("\\hline\n");
+//    printf("Species");
+//    for (i = 0; i < NUM_GENE; i++)
+//    {
+//        printf(" & %7s", g_strSpeciesFullName[i]);
+//    }
+//    printf("\\\\ \\hline\n");
+//    
+//    for (i = 0; i < NUM_GENE; i++)
+//    {
+//        printf("%7s", g_strSpeciesFullName[i]);
+//        for (j = 0; j <= i; j++)
+//        {
+//            printf(" &        ");
+//        }
+//
+//        for (; j < NUM_GENE; j++)
+//        {
+//            printf(" & %7.2lf", diffMatrix[i][j]);
+//        }
+//        printf("\\\\\n");
+//    }
+//
+//    printf("\\hline\n");
+//}
 

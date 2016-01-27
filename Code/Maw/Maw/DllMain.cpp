@@ -8,6 +8,7 @@
 #include <string.h>
 
 #include "Constants.h"
+#include "Globals.h"
 
 extern int runMaw(double diffMatrix[][NUM_GENE], int diffIndex);
 extern int runRaw(double diffMatrix[][NUM_GENE], int diffIndex);
@@ -88,7 +89,7 @@ extern "C" __declspec(dllexport) int getDiffMatrix(
 
 extern "C" __declspec(dllexport) int getRanks(int rank[][NUM_GENE], int absWordType, int diffIndex)
 {
-    double diffMatrix[NUM_GENE][NUM_GENE];
+    double diffMatrix[NUM_GENE][NUM_GENE] = {0};
     int ret = 0;
 
     ret = getDiffMatrix(diffMatrix, absWordType, diffIndex);
