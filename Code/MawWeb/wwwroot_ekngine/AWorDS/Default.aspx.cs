@@ -197,7 +197,7 @@ public partial class Default : System.Web.UI.Page
             if (outputType == "Distance_Matrix")
             {
                 if (!testing)
-                    InteropMAW.getDiffMatrix(diffMatrixLocal, absWordType, diffIndex);
+                    ret = InteropMAW.getDiffMatrix(diffMatrixLocal, absWordType, diffIndex);
 
                 #region format the output (Diff Matrix) as table
                 
