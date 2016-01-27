@@ -81,8 +81,7 @@
         <div id="main">
             <div id="header" style=" background-color :Black">
               <div id="logo" style="padding-top:10px;"> 
-              <!--<h2>An Experimental Study:&nbsp; </h2>-->
-              <h1 >MAWDist  &nbsp;</h1>
+              <h1 >AWorDS  &nbsp;</h1>
               <br />
               </div>
               <br />
@@ -123,24 +122,26 @@
             <div id="content">
                 <div class="sidebar" style=" width:97%; float:left;">
                     <br />
-                     <h1>Absent words and the dissimilarity analysis of DNA sequences</h1>
+                    <h1>Absent Word Based (Dis)similarity analysis of Sequences</h1>
                     <h5> By; Mohammad Saifur Rahman, Ali Alatabbi, Tanver Athar, Maxime Crochemore, M. Sohel Rahman</h5>
                     <hr />
-                    <h2>MAWDist</h2>
+                    <h2>AWorDS</h2>
                     <br />
                     <p>
-                        This tool takes the set of Minimal Absent Words (MAW) 
-                        from two sequences and produces the distant matrices based on a number of indexes. 
+                        The tool is called <b>A</b>bsent <b>Wor</b>d Based (<b>D</b>is)similarity analysis of <b>S</b>equences;
+                        <b>AWorDS</b> in short. (Pronounced like "Awards"). It takes the set of Minimal Absent Words (MAW) or
+                        Relative Absent Words (RAW) of several sequences and produces the difference matrix based on a number
+                        indices. 
                         <br />
-                        The distance matrices can be used to produce phylogenetic 
-                        trees using a number of known algorithms.
+                        The distance matrix can be used to demonstrate relative closeness of the sequences. It can be used
+                        to produce phylogenetic trees using a number of known algorithms.
                     </p>
                     <!-- <hr />
                     <h2>Future Direction </h2>
                     <p> <</p>-->
                     <br />
                     <hr />
-                    <h2>Demo application </h2>
+                    <h2>Try it Out!</h2>
                     <p  style="font-size:15px; font-weight:bold; color:red;">Step 1: Create new experiment</p>
                     <asp:Label ID="Label3" runat="server" >Type the experiment name and click create button</asp:Label>
                     <br /><br />
