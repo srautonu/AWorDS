@@ -1,2 +1,2 @@
-# Research
-This is the repository for my research work. It will include source code, latex code etc.
+# AWorDS
+Absent Word Based (Dis)similarity analysis of Sequences
