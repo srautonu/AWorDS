@@ -1,5 +1,4 @@
 ﻿
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -23,7 +22,14 @@ using System.Web.UI.WebControls;
 
 public partial class Default : System.Web.UI.Page
 {
+    //
+    // Debug hooks. All these must be set to false before publishing the project
+    //
+    #region Debuggin Hooks
     bool testing = false;
+    bool bypassExpCreation = false;
+    #endregion
+
     string ExpName
     {
         get
@@ -66,10 +72,14 @@ public partial class Default : System.Web.UI.Page
 
     }
 
+
     protected void Page_Load(object sender, EventArgs e)
     {
-        ExpName = "Maw";
-        ExpPath = @"C:\gitHub\MAW\Code\MawWeb\wwwroot_ekngine\MAW\data\" + ExpName;
+        if (bypassExpCreation)
+        {
+            ExpName = "Maw_RC";
+            ExpPath = @"C:\gitHub\MAW\Code\MawWeb\wwwroot_ekngine\MAW\data\" + ExpName;
+        }
 
         this.msg1.Visible = !String.IsNullOrEmpty(this.ExpName);
         this.msg1.Text = "Experiment name:" + this.ExpName;
@@ -176,8 +186,8 @@ public partial class Default : System.Web.UI.Page
             string outputType = this.DropDownListOutputType.SelectedValue;
 
             diffIndex = int.Parse(indexType);
-            double[,] diffMatrixLocal = new double[seqFullNames.Count, seqFullNames.Count];
-            int[,] rank = new int[seqFullNames.Count, seqFullNames.Count];
+            double[,] diffMatrixLocal = new double[InteropMAW.NUM_GENE, InteropMAW.NUM_GENE];
+            int[,] rank = new int[InteropMAW.NUM_GENE, InteropMAW.NUM_GENE];
 
             StringBuilder talbeSB = new StringBuilder();
             int ret = 0;
@@ -188,7 +198,7 @@ public partial class Default : System.Web.UI.Page
             {
                 if (!testing)
                     InteropMAW.getDiffMatrix(diffMatrixLocal, absWordType, diffIndex);
-                
+
                 #region format the output (Diff Matrix) as table
                 
                 talbeSB.Append("<table class=\"table1\">");
@@ -226,7 +236,9 @@ public partial class Default : System.Web.UI.Page
             {
                 if (!testing)
                     InteropMAW.getRanks(rank, absWordType, diffIndex);
+
                 #region format the output (Species Distance Matrix) as table
+
                 talbeSB.Clear();
                 talbeSB.Append("<br \">");
                 talbeSB.Append("<table class=\"table1\">");
@@ -252,6 +264,7 @@ public partial class Default : System.Web.UI.Page
                 }
                 talbeSB.Append("</tbody>");
                 talbeSB.Append("</table>");
+                
                 #endregion
             }
 
