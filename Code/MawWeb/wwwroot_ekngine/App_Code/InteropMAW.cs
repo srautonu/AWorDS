@@ -22,13 +22,13 @@ public class InteropMAW
     //
 
     #region extertnal methods
-    [DllImport(@"C:\gitHub\MAW\Code\MawWeb\wwwroot_ekngine\Bin\maw.dll", CallingConvention = CallingConvention.Cdecl)]
+    [DllImport(@"C:\gitHub\AWorDS\Code\MawWeb\wwwroot_ekngine\Bin\maw.dll", CallingConvention = CallingConvention.Cdecl)]
     public static extern int Initialize(String[] geneFullNames, String[] geneShortNames, int nGenes, String dataDir);
 
-    [DllImport(@"C:\gitHub\MAW\Code\MawWeb\wwwroot_ekngine\Bin\maw.dll", CallingConvention = CallingConvention.Cdecl)]
+    [DllImport(@"C:\gitHub\AWorDS\Code\MawWeb\wwwroot_ekngine\Bin\maw.dll", CallingConvention = CallingConvention.Cdecl)]
     public static extern int getDiffMatrix([Out] double[,] diffMatrix, int absWordType, int diffIndex);
 
-    [DllImport(@"C:\gitHub\MAW\Code\MawWeb\wwwroot_ekngine\Bin\maw.dll", CallingConvention = CallingConvention.Cdecl)]
+    [DllImport(@"C:\gitHub\AWorDS\Code\MawWeb\wwwroot_ekngine\Bin\maw.dll", CallingConvention = CallingConvention.Cdecl)]
     public static extern int getRanks([Out] int[,] rank, int absWordType, int diffIndex);
 
     #endregion
