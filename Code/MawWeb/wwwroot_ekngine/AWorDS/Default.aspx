@@ -136,6 +136,12 @@
                         The distance matrix can be used to demonstrate relative closeness of the sequences. It can also be used
                         to produce phylogenetic trees using a number of known algorithms.
                     </p>
+					
+				    <h4>Acknowledgements</h4>
+                    <p>
+                        Partially supported by the INSPIRE Strategic Partnership Award, administered by the British Council, Bangladesh for the project titled "Advances in Algorithms for Next Generation Biological Sequences".
+                    </p>
+
                     <!-- <hr />
                     <h2>Future Direction </h2>
                     <p> <</p>-->
