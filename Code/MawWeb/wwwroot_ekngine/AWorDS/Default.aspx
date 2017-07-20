@@ -1,7 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" MaintainScrollPositionOnPostback="true" CodeFile="Default.aspx.cs" Inherits="Default" %>
-
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp"  %>
-
 <%@ Register Assembly="MSCaptcha" Namespace="MSCaptcha" TagPrefix="cc1" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -156,7 +154,7 @@
                     <asp:TextBox ID="TextBoxExpName" style="font-size:20px;" runat="server"></asp:TextBox>
                      <br />
                      <br />
-                    <asp:Button ID="ButtonCreateExp" class="buttonstyleCss" runat="server" Text="Create" OnClick="ButtonCreateExp_Click" />
+                    <asp:Button  ValidationGroup="VGNone" ID="ButtonCreateExp" class="buttonstyleCss" runat="server" Text="Create" OnClick="ButtonCreateExp_Click" />
                      <br />
                    
                    <br />
@@ -188,7 +186,7 @@
                             <table border="0" cellpadding="3" cellspacing="0" style="border:1px solid #CBD1D2; padding:10px; width:200px;">
                                     <tr>
                                         <td colspan="2">
-                                            <cc1:CaptchaControl ID="Captcha1" runat="server" CaptchaBackgroundNoise="Low" CaptchaLength="6"
+                                            <cc1:CaptchaControl ValidationGroup="VG1" ID="Captcha1" runat="server" CaptchaBackgroundNoise="Low" CaptchaLength="6"
                                                 CaptchaHeight="32" CaptchaWidth="150" CaptchaMinTimeout="5" CaptchaMaxTimeout="240"
                                                 FontColor="Blue" NoiseColor="#B1B1B1" />
                                         </td>
@@ -213,14 +211,14 @@
                                     </tr>
                                     <tr>
                                         <td colspan="3">
-                                            <asp:CustomValidator ID="CustomValidator1" style="color:red;" ErrorMessage=""  OnServerValidate="ValidateCaptcha" runat="server" />
+                                            <asp:CustomValidator ID="CustomValidator1" style="color:red;" ErrorMessage="" ValidationGroup="VG1"  OnServerValidate="ValidateCaptcha" runat="server" />
                                         </td>
                                     </tr>
                             </table>
                         
                             <asp:Label ID="msg2" style="font-size:12px; border:1px solid #CBD1D2; background-color:#bef4ec; color:#151813; padding:5px; width:585px;"  runat="server" Width="100%" Visible="false"></asp:Label>
                             <br /> 
-                            <asp:Button ID="upAndSearch" runat="server" Text="Upload" OnClientClick="javascript:return ValidateUploadFileType();" class="buttonstyleCss"/>  
+                            <asp:Button ID="upAndSearch" ValidationGroup="VG1" runat="server" Text="Upload" OnClientClick="javascript:return ValidateUploadFileType();" class="buttonstyleCss"/>  
 
                         </div>
                         
@@ -266,7 +264,7 @@
                 
                     <p id="P3" style="font-size:15px; font-weight:bold; color:red;">Step 4: Run the experiment</p>
                     
-                   <asp:Button ID="Button1"  class="buttonstyleCss" runat="server" onclick="Button1_Click" Text="&nbsp;&nbsp;Run&nbsp;&nbsp;" />
+                   <asp:Button ID="Button1"  ValidationGroup="VGNone" class="buttonstyleCss" runat="server" onclick="Button1_Click" Text="&nbsp;&nbsp;Run&nbsp;&nbsp;" />
                     <br />  <br />
                       <hr />                       
                     </div>
