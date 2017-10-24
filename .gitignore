@@ -1,3 +1,9 @@
+*.sdf
+*.suo
+*.vcxproj.user
+
+Code/Maw/ipch/*
+
 # Compiled Object files
 *.slo
 *.lo
